@@ -9,7 +9,7 @@ from .models import Autor
 class CriarAutorView(APIView):
     def post(self, request):
         try:
-            dados_autor = request.data('dados_autor')
+            dados_autor = request.data.get('dados_autor')
             
             autor = AutorSerializer(data=dados_autor, many=False)
             if autor.is_valid():
@@ -22,7 +22,7 @@ class CriarAutorView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class ListarAutoresView(APIView):
-    def get(self):
+    def get(self, request):
         try:
             autores = Autor.objects.all()
             serializer = AutorSerializer(autores, many=True)
@@ -34,10 +34,10 @@ class ListarAutoresView(APIView):
 class AtualizarAutorView(APIView):
     def patch(self, request, autor_id):
         try:
-            dados_autor_atualizados = request.data('dados_autor_atualizados')
+            dados_autor_atualizados = request.data.get('dados_autor_atualizados')
             instancia_autor = Autor.objects.get(id=autor_id)
             
-            autor = AutorSerializer(instancia_autor, data=dados_autor_atualizados, many=False)
+            autor = AutorSerializer(instancia_autor, data=dados_autor_atualizados, partial=True)
             if autor.is_valid():
                 autor.save()
                 return Response({"message": "Autor atualizado com sucesso!"}, status=status.HTTP_200_OK)
@@ -50,7 +50,7 @@ class AtualizarAutorView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class ExcluirAutorView(APIView):
-    def delete(self, autor_id):
+    def delete(self, request, autor_id):
         try:
             instancia_autor = Autor.objects.get(id=autor_id)
             instancia_autor.delete()    
