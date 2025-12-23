@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("repo/admin/", admin.site.urls),
@@ -26,4 +28,11 @@ urlpatterns = [
     path("repo/curso/", include("apps.curso.urls", namespace="curso")),
     path("repo/palavra_chave/", include("apps.palavra_chave.urls", namespace="palavra_chave")),
     path("repo/trabalho/", include("apps.trabalho.urls", namespace="trabalho")),
+    path("repo/arquivo/", include("apps.arquivo.urls", namespace="arquivo")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
