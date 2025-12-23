@@ -22,4 +22,5 @@ urlpatterns = [
     path("repo/admin/", admin.site.urls),
     path("repo/autor/", include("apps.autor.urls", namespace="autor")),
     path("repo/orientador/", include("apps.orientador.urls", namespace="orientador")),
+    path("repo/departamento/", include("apps.departamento.urls", namespace="departamento")),
 ]
