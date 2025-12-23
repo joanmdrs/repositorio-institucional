@@ -24,4 +24,5 @@ urlpatterns = [
     path("repo/orientador/", include("apps.orientador.urls", namespace="orientador")),
     path("repo/departamento/", include("apps.departamento.urls", namespace="departamento")),
     path("repo/curso/", include("apps.curso.urls", namespace="curso")),
+    path("repo/palavra_chave/", include("apps.palavra_chave.urls", namespace="palavra_chave")),
 ]
