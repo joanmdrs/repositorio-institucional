@@ -1,4 +1,4 @@
-export interface Trabalho {
+export interface TrabalhoInterface {
     id: number;
     titulo: string;
     resumo: string;
