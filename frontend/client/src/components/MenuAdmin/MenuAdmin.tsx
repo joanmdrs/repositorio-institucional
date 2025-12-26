@@ -1,49 +1,63 @@
-import { Menu } from "antd"
-// const { SubMenu } = Menu;
+import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
+import {
+    HomeOutlined,
+    UserOutlined,
+    TeamOutlined,
+    ApartmentOutlined,
+    BookOutlined,
+    TagsOutlined,
+    FileTextOutlined,
+    SettingOutlined,
+    FolderOpenOutlined,
+} from "@ant-design/icons";
 
-function MenuAdmin () {
+function MenuAdmin() {
+    const navigate = useNavigate();
 
     return (
-        <div>
-            <Menu 
-                mode="inline" 
-                id="component-admin-menu"
-                theme="dark"
-            >   
-                <Menu.Item key="/autor">
-                    Autores
-                </Menu.Item>
-                
-                <Menu.Item key="/orientador">
-                    Orientadores
-                </Menu.Item>
+        <Menu
+            mode="inline"
+            theme="dark"
+            onClick={({ key }) => navigate(key)}
+        >
+            <Menu.Item key="/" icon={<HomeOutlined />}>
+                Home
+            </Menu.Item>
 
-                <Menu.Item key="/departamento">
-                    Departamentos
-                </Menu.Item>
+            <Menu.Item key="/autores" icon={<UserOutlined />}>
+                Autores
+            </Menu.Item>
 
-                <Menu.Item key="/curso">
-                    Cursos
-                </Menu.Item>
+            <Menu.Item key="/orientador" icon={<TeamOutlined />}>
+                Orientadores
+            </Menu.Item>
 
-                <Menu.Item key="/palavra-chave">
-                    Palavras-chave
-                </Menu.Item>
+            <Menu.Item key="/departamento" icon={<ApartmentOutlined />}>
+                Departamentos
+            </Menu.Item>
 
-                <Menu.Item key="/trabalho"> 
-                    Trabalhos
-                </Menu.Item>
+            <Menu.Item key="/curso" icon={<BookOutlined />}>
+                Cursos
+            </Menu.Item>
 
-                <Menu.Item key="/usuario">  
-                    Usuários
-                </Menu.Item>
+            <Menu.Item key="/palavra-chave" icon={<TagsOutlined />}>
+                Palavras-chave
+            </Menu.Item>
 
-                <Menu.Item key="/arquivo">
-                    Arquivos
-                </Menu.Item>
-            </Menu>
-        </div>
-    )
+            <Menu.Item key="/trabalho" icon={<FileTextOutlined />}>
+                Trabalhos
+            </Menu.Item>
+
+            <Menu.Item key="/usuario" icon={<SettingOutlined />}>
+                Usuários
+            </Menu.Item>
+
+            <Menu.Item key="/arquivo" icon={<FolderOpenOutlined />}>
+                Arquivos
+            </Menu.Item>
+        </Menu>
+    );
 }
 
-export default MenuAdmin
+export default MenuAdmin;
