@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Layout } from 'antd';
 import MenuAdmin from '../MenuAdmin/MenuAdmin';
 import ComponentHeader from '../Header/Header';
+import { Outlet } from 'react-router-dom';
 
-const { Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 // const headerStyle: React.CSSProperties = {
 //     textAlign: 'center',
@@ -14,11 +15,9 @@ const { Footer, Sider, Content } = Layout;
 // };
 
 const contentStyle: React.CSSProperties = {
-    textAlign: 'center',
     minHeight: 120,
     lineHeight: '120px',
-    color: '#fff',
-    backgroundColor: '#0958d9',
+    backgroundColor: "#FFFFFF"
 };
 
 const logoStyle: React.CSSProperties = {
@@ -33,12 +32,6 @@ const siderStyle: React.CSSProperties = {
     color: '#fff',
 };
 
-const footerStyle: React.CSSProperties = {
-    textAlign: 'center',
-    color: '#fff',
-    backgroundColor: '#4096ff',
-};
-
 const layoutStyle = {
     overflow: 'hidden',
     minHeight: '100vh'
@@ -46,21 +39,25 @@ const layoutStyle = {
     // maxWidth: 'calc(50% - 8px)',
 };
 
-function MainLayout ({content }: {content?: React.ReactNode}) {
+function MainLayout () {
     const [collapsed, setCollapsed] = useState(false);
 
     return (
         <Layout style={layoutStyle}>
-            <Sider style={siderStyle} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+            <Sider 
+                style={siderStyle} 
+                collapsible 
+                collapsed={collapsed} 
+                onCollapse={(value) => setCollapsed(value)}
+            >
                 <div style={logoStyle}></div>
                 <MenuAdmin />
             </Sider>
             <Layout>
                 <ComponentHeader />
                 <Content style={contentStyle}>
-                    {content}
+                    <Outlet />
                 </Content>
-                <Footer style={footerStyle}>Footer</Footer>
             </Layout>
         </Layout>
     )
