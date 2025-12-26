@@ -1,12 +1,18 @@
-import './App.css'
-import MainLayout from './components/MainLayout/MainLayout'
+import { ConfigProvider } from 'antd';
+import AppRoutes from './routes';
 
 function App() {
-
   return (
-
-    <MainLayout />
-  )
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: 'Lexend, sans-serif',
+        },
+      }}
+    >
+      <AppRoutes />
+    </ConfigProvider>
+  );
 }
 
-export default App
+export default App;
