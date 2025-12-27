@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Space } from "antd";
 import { HomeOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
-import AutorList from "./components/AutorList/AutorList";
+import AutorList from "./AutorList";
 import BoxContent from "../../components/BoxContent/BoxContent";
 import { useNavigate } from "react-router-dom";
 

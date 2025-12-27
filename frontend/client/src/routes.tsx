@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout/MainLayout";
 import AutorPage from "./pages/Autor";
-import AutorForm from "./pages/Autor/components/AutorForm/AutorForm";
+import AutorForm from "./pages/Autor/AutorForm";
 
 
 function AppRoutes(){

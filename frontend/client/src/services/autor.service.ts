@@ -13,13 +13,13 @@ export async function listarAutores() {
     return response;
 }
 
-export async function AtualizarAutor(id: number, data: AutorInterface) {
+export async function atualizarAutor(id: number, data: AutorInterface) {
     const response = await api.patch(`autor/atualizar/${id}/`, {dados_autor_atualizados: data});
     return response;
 }
 
-export async function deletarAutor(id: number) {
-    const response = await api.delete(`autor/deletar/${id}/`);
+export async function excluirAutor(id: number) {
+    const response = await api.delete(`autor/excluir/${id}/`);
     return response;
 }
 
