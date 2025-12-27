@@ -33,7 +33,7 @@ function MenuAdmin() {
                 Orientadores
             </Menu.Item>
 
-            <Menu.Item key="/departamento" icon={<ApartmentOutlined />}>
+            <Menu.Item key="/departamentos" icon={<ApartmentOutlined />}>
                 Departamentos
             </Menu.Item>
 

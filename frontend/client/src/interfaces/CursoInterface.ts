@@ -1,4 +1,5 @@
 export interface CursoInterface {
+    id?: number;
     nome: string;
     codigo: string;
     nivel: string;

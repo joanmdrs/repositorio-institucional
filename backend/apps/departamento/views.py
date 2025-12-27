@@ -73,6 +73,18 @@ class BuscarDepartamentoPeloNomeView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+class ObterDepartamentoPeloIdView(APIView):
+    def get(self, request, departamento_id):
+        try:
+            departamento = Departamento.objects.get(id=departamento_id)
+            serializer = DepartamentoSerializer(departamento)
+            
+        except Departamento.DoesNotExist:
+            return Response({"error": "Departamento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
 
