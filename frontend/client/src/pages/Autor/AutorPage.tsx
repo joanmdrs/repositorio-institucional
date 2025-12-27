@@ -1,7 +1,6 @@
 import { Breadcrumb, Button, Space } from "antd";
 import { HomeOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import BoxContent from "../../components/BoxContent/BoxContent";
 import AutorList from "./AutorList";
 
 
@@ -9,7 +8,7 @@ function AutorPage() {
     const navigate = useNavigate();
 
     return (
-        <BoxContent>
+        <div>
             <Breadcrumb
                 style={{ margin: '10px 10px 0' }}
                 items={[
@@ -38,7 +37,7 @@ function AutorPage() {
             </Space>
 
             <AutorList />
-        </BoxContent>
+        </div>
     );
 }
 

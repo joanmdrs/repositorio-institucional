@@ -1,7 +1,6 @@
 
 const boxContentStyle = {
     padding: '10px',
-    borderRadius: '8px',
 }
 
 function BoxContent({ children }: { children: React.ReactNode }) {

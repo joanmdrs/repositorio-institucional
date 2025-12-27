@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface UseEntityFormProps<T> {
-    getById: (id: number) => Promise<{ data: T }>;
-    create: (data: T) => Promise<{ data: T[] }>;
-    update: (id: number, data: T) => Promise<{ data: T[] }>;
+    getById: (id: number) => Promise<{ data: any }>;
+    create: (data: T) => Promise<{ data: any }>;
+    update: (id: number, data: T) => Promise<{ data: any }>;
     redirectTo: string;
     getTitle?: (isEdit: boolean) => string;
 }

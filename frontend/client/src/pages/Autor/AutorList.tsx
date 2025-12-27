@@ -22,7 +22,7 @@ function AutorList() {
         {
             title: "Ações",
             key: "acoes",
-            render: (_: any, record: AutorInterface) => (
+            render: (record: AutorInterface) => (
                 <Space>
                     <Button
                         type="link"

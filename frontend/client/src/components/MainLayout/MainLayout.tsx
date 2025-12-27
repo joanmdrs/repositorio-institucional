@@ -17,7 +17,8 @@ const { Sider, Content } = Layout;
 const contentStyle: React.CSSProperties = {
     minHeight: 120,
     lineHeight: '120px',
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
+    padding: '10px'
 };
 
 const logoStyle: React.CSSProperties = {
