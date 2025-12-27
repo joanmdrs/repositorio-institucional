@@ -1,9 +1,24 @@
-import { Table } from "antd"
+import { Button, Popconfirm, Space, Table } from "antd"
+import { useEffect, useState } from "react";
+import { listarAutores } from "../../../../services/autor.service";
+import { useNavigate } from "react-router-dom";
+import type { AutorInterface } from "../../../../interfaces/AutorInterface";
 
 
 function AutorList () {
 
-    const columns = [
+    const [dadosAutores, setDadosAutores] = useState([]);
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await listarAutores();
+            setDadosAutores(response.data);
+        }
+        fetchData();
+    }, []);
+
+    const colunasAutores = [
         {
             title: 'Nome',
             dataIndex: 'nome',
@@ -27,20 +42,35 @@ function AutorList () {
         {
             title: 'Ações',
             key: 'acoes',
-            render: () => (
-                <span>
-                    <a style={{ marginRight: 16 }}>Editar</a>
-                    <a>Excluir</a>
-                </span>
+            render: (_, record: AutorInterface) => (
+                <Space>
+                    <Button
+                        type="link"
+                        onClick={() => navigate(`/editar-autor/${record.id}`)}
+                    >
+                        Editar
+                    </Button>
+
+                    <Popconfirm
+                        title="Deseja realmente excluir este autor?"
+                        okText="Sim"
+                        cancelText="Não"
+                        
+                    >
+                        <Button type="link" danger>
+                            Excluir
+                        </Button>
+                    </Popconfirm>
+                </Space>
             ),
         }
     ];  
     return (
         <div>
             <Table 
-                
-                columns={columns}
-                dataSource={[]}
+                columns={colunasAutores}
+                dataSource={dadosAutores}
+                rowKey="id"
             />
         </div>
     )
