@@ -29,7 +29,7 @@ function MenuAdmin() {
                 Autores
             </Menu.Item>
 
-            <Menu.Item key="/orientador" icon={<TeamOutlined />}>
+            <Menu.Item key="/orientadores" icon={<TeamOutlined />}>
                 Orientadores
             </Menu.Item>
 

@@ -1,5 +1,6 @@
 export interface OrientadorInterface {
-    nome_completo: string;
+    id?: number;
+    nome: string;
     cpf: string;
     email: string;
     matricula: string;

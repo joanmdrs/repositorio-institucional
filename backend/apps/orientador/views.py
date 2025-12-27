@@ -8,9 +8,9 @@ from .models import Orientador
 class CriarOrientadorView(APIView):
     def post(self, request):
         try:
-            orientador_dados = request.data.get('orientador_dados')
+            dados_orientador = request.data.get('dados_orientador')
 
-            orientador = OrientadorSerializer(data=orientador_dados, many=False)
+            orientador = OrientadorSerializer(data=dados_orientador, many=False)
             if orientador.is_valid():
                 orientador.save()
                 return Response({"message": "Orientador criado com sucesso!"}, status=status.HTTP_201_CREATED)
@@ -60,6 +60,20 @@ class ExcluirOrientadorView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+
+class ObterOrientadorPeloIdView(APIView):
+    def get(self, request, orientador_id):
+        try:
+            orientador = Orientador.objects.get(id=orientador_id)
+            serializer = OrientadorSerializer(orientador)
+            return Response(serializer.data, status=status.HTTP_200_OK)            
+            
+        except Orientador.DoesNotExist:
+            return Response({"error": "Orientador não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class FiltrarOrientadorPorCPFView(APIView):
     def get(self, request, cpf):
         try:

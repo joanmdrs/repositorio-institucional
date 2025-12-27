@@ -10,14 +10,14 @@ class Orientador(models.Model):
         ('POSDOUT', 'Pós-Doutorado'),
     ]
     
-    nome_completo = models.CharField(max_length=255)
+    nome = models.CharField(max_length=255)
     cpf = models.CharField(max_length=14, unique=True)
     matricula = models.CharField(max_length=20, unique=True)
     email = models.EmailField()
     titulacao = models.CharField(max_length=50, choices=TITULACAO_CHOICES)
 
     def __str__(self):
-        return self.nome_completo
+        return self.nome
 
     def __unicode__(self):
-        return self.nome_completo
+        return self.nome
