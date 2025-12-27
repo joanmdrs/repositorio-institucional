@@ -37,7 +37,7 @@ function MenuAdmin() {
                 Departamentos
             </Menu.Item>
 
-            <Menu.Item key="/curso" icon={<BookOutlined />}>
+            <Menu.Item key="/cursos" icon={<BookOutlined />}>
                 Cursos
             </Menu.Item>
 

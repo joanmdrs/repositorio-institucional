@@ -6,6 +6,8 @@ import OrientadorPage from "./pages/Orientador/OrientadorPage";
 import OrientadorForm from "./pages/Orientador/OrientadorForm";
 import DepartamentoPage from "./pages/Departamento/DepartamentoPage";
 import DepartamentoForm from "./pages/Departamento/DepartamentoForm";
+import CursoPage from "./pages/Curso/CursoPage";
+import CursoForm from "./pages/Curso/CursoForm";
 
 
 function AppRoutes(){
@@ -25,6 +27,10 @@ function AppRoutes(){
                     <Route path="/departamentos" element={<DepartamentoPage /> } />
                     <Route path="/novo-departamento" element={<DepartamentoForm />} />
                     <Route path="/editar-departamento/:id" element={<DepartamentoForm />} />
+
+                    <Route path="/cursos" element={<CursoPage />} />
+                    <Route path="/novo-curso" element={<CursoForm />} />
+                    <Route path="/editar-curso/:id" element={<CursoForm />} />
 
     
                 </Route>

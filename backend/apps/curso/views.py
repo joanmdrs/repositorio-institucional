@@ -69,5 +69,18 @@ class BuscarCursoPeloNomeView(APIView):
         
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class ObterCursoPeloIdView(APIView):
+    def get(self, request, curso_id):
+        try:
+            curso = Curso.objects.get(id=curso_id)
+            serializer = CursoSerializer(curso)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except Curso.DoesNotExist:
+            return Response({"error": "Curso não encontrado."}, status=status.HTTP_400_BAD_REQUEST)          
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
        
