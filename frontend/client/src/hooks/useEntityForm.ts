@@ -57,7 +57,7 @@ export function useEntityForm<T>({
 
 
             message.success(
-                isEdit ? "Atualizado com sucesso" : "Criado com sucesso"
+                isEdit ? "Registro atualizado com sucesso" : "Registrado realizado com sucesso"
             );
             navigate(redirectTo);
         } catch {

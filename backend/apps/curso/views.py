@@ -78,7 +78,7 @@ class ObterCursoPeloIdView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         except Curso.DoesNotExist:
-            return Response({"error": "Curso não encontrado."}, status=status.HTTP_400_BAD_REQUEST)          
+            return Response({"error": "Curso não encontrado."}, status=status.HTTP_404_NOT_FOUND)          
             
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

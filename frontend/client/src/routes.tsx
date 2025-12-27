@@ -8,6 +8,8 @@ import DepartamentoPage from "./pages/Departamento/DepartamentoPage";
 import DepartamentoForm from "./pages/Departamento/DepartamentoForm";
 import CursoPage from "./pages/Curso/CursoPage";
 import CursoForm from "./pages/Curso/CursoForm";
+import PalavraChavePage from "./pages/PalavraChave/PalavraChavePage";
+import PalavraChaveForm from "./pages/PalavraChave/PalavraChaveForm";
 
 
 function AppRoutes(){
@@ -31,6 +33,10 @@ function AppRoutes(){
                     <Route path="/cursos" element={<CursoPage />} />
                     <Route path="/novo-curso" element={<CursoForm />} />
                     <Route path="/editar-curso/:id" element={<CursoForm />} />
+
+                    <Route path="/palavras-chave" element={<PalavraChavePage />} />
+                    <Route path="/nova-palavra-chave" element={<PalavraChaveForm />} />
+                    <Route path="/editar-palavra-chave/:id" element={<PalavraChaveForm />} />
 
     
                 </Route>

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import CriarPalavraChaveView, ListarPalavrasChaveView, AtualizarPalavraChaveView, BuscarPalavraChavePeloTermoView, ExcluirPalavraChaveView
+from .views import CriarPalavraChaveView, ListarPalavrasChaveView, AtualizarPalavraChaveView, BuscarPalavraChavePeloTermoView, ExcluirPalavraChaveView, ObterPalavraChavePeloIdView
 
 app_name = "palavra_chave"
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path("atualizar/<int:palavra_chave_id>/", AtualizarPalavraChaveView.as_view(), name="atualizar_palavra_chave"),
     path("excluir/<int:palavra_chave_id>/", ExcluirPalavraChaveView.as_view(), name="excluir_palavra_chave"),
     path("buscar-pelo-termo/", BuscarPalavraChavePeloTermoView.as_view(), name="buscar_palavra_chave_termo"), 
+    path("obter-pelo-id/<int:palavra_chave_id>/", ObterPalavraChavePeloIdView.as_view(), name="obter_palavra_chave_pelo_id")
 ]

@@ -73,5 +73,17 @@ class ExcluirPalavraChaveView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+class ObterPalavraChavePeloIdView(APIView):
+    def get(self, request, palavra_chave_id):
+        try:
+            palavra_chave = PalavraChave.objects.get(id=palavra_chave_id)
+            serializer = PalavraChaveSerializer(palavra_chave)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except PalavraChave.DoesNotExist:
+            return Response({"error": "Palavra-Chave não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+                 
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
        
         

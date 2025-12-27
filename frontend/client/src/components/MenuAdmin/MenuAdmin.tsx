@@ -41,7 +41,7 @@ function MenuAdmin() {
                 Cursos
             </Menu.Item>
 
-            <Menu.Item key="/palavra-chave" icon={<TagsOutlined />}>
+            <Menu.Item key="/palavras-chave" icon={<TagsOutlined />}>
                 Palavras-chave
             </Menu.Item>
 
