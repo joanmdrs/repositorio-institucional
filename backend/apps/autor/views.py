@@ -5,7 +5,6 @@ from rest_framework import status
 from .serializers import AutorSerializer
 from .models import Autor
 
-
 class CriarAutorView(APIView):
     def post(self, request):
         try:
@@ -14,7 +13,7 @@ class CriarAutorView(APIView):
             autor = AutorSerializer(data=dados_autor, many=False)
             if autor.is_valid():
                 autor.save()
-                return Response({"message": "Autor criado com sucesso!"}, status=status.HTTP_201_CREATED)
+                return Response({"message": "Autor criado com sucesso!"}, status=status.HTTP_200_OK)
             else:
                 return Response(autor.errors, status=status.HTTP_400_BAD_REQUEST)
             
