@@ -45,7 +45,7 @@ function MenuAdmin() {
                 Palavras-chave
             </Menu.Item>
 
-            <Menu.Item key="/trabalho" icon={<FileTextOutlined />}>
+            <Menu.Item key="/trabalhos" icon={<FileTextOutlined />}>
                 Trabalhos
             </Menu.Item>
 

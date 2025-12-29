@@ -6,7 +6,8 @@ from .views import (
     FiltrarTrabalhosPeloTituloView,
     FiltrarTrabalhosPeloAnoView,
     FiltrarTrabalhosPeloNomeAutorView,
-    ExcluirTrabalhoView)
+    ExcluirTrabalhoView, 
+    ObterTrabalhoPeloIdView)
 
 app_name = "trabalho"
 
@@ -18,4 +19,5 @@ urlpatterns = [
     path("filtrar-pelo-titulo/", FiltrarTrabalhosPeloTituloView.as_view(), name="filtrar_trabalhos_titulo"),
     path("filtrar-pelo-ano/", FiltrarTrabalhosPeloAnoView.as_view(), name="filtrar_trabalhos_ano"),
     path("filtrar-pelo-nome-autor/", FiltrarTrabalhosPeloNomeAutorView.as_view(), name="filtrar_trabalhos_nome_autor"),
+    path("obter-pelo-id/<int:trabalho_id>/", ObterTrabalhoPeloIdView.as_view(), name="obter_trabalho_pelo_id")
 ]   

@@ -2,14 +2,12 @@ import api from "../api/api";
 import type { CursoInterface } from "../interfaces/CursoInterface"; 
 
 export async function criarCurso(dados_curso: CursoInterface) {
-    console.log("Dados do curso: ", dados_curso)
     const response = await api.post("curso/criar/", {dados_curso: dados_curso});
     return response;
 }
 
 export async function listarCursos() { 
     const response = await api.get("curso/listar/");
-    console.log(response)
     return response;
 }
 

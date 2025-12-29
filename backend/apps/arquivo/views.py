@@ -6,6 +6,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Arquivo
 from .serializers import ArquivoSerializer
 import hashlib
+from django.http import FileResponse
 
 class CriarArquivoView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -58,3 +59,13 @@ class ExcluirArquivoView(APIView):
                 {"error": "Arquivo não encontrado."},
                 status=status.HTTP_404_NOT_FOUND
             )   
+            
+        
+class DownloadArquivoView(APIView):
+    def get(self, request, arquivo_id):
+        arquivo = Arquivo.objects.get(id=arquivo_id)
+        return FileResponse(
+            arquivo.arquivo.open(),
+            as_attachment=True,
+            filename=arquivo.arquivo.name
+        )

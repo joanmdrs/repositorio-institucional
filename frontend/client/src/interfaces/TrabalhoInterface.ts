@@ -1,5 +1,5 @@
 export interface TrabalhoInterface {
-    id: number;
+    id?: number;
     titulo: string;
     resumo: string;
     ano_defesa: number;
