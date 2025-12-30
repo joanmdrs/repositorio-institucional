@@ -22,8 +22,9 @@ class CriarArquivoView(APIView):
 
         checksum = hashlib.sha256(file.read()).hexdigest()
         file.seek(0)
-
         data = request.data.copy()
+        data['nome'] = file.name
+        data['tipo'] = file.content_type
         data['tamanho'] = file.size
         data['checksum'] = checksum
 

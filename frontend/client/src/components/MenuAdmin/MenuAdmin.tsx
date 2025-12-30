@@ -49,11 +49,11 @@ function MenuAdmin() {
                 Trabalhos
             </Menu.Item>
 
-            <Menu.Item key="/usuario" icon={<SettingOutlined />}>
+            <Menu.Item key="/usuarios" icon={<SettingOutlined />}>
                 Usuários
             </Menu.Item>
 
-            <Menu.Item key="/arquivo" icon={<FolderOpenOutlined />}>
+            <Menu.Item key="/arquivos" icon={<FolderOpenOutlined />}>
                 Arquivos
             </Menu.Item>
         </Menu>

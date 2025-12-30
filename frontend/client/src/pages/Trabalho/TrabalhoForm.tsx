@@ -138,8 +138,6 @@ function TrabalhoForm () {
             formData.append("arquivo", values.arquivo);
         }
 
-        console.log(values)
-
         if (isEdit) {
             await atualizarTrabalho(form.getFieldValue("id"), formData);
         } else {

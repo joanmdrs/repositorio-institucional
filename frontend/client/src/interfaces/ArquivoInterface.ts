@@ -1,6 +1,7 @@
 export interface ArquivoDetail {
     id: number;
     trabalho: number;
+    name: string;
     arquivo: string;
     tipo: string;
     tamanho: number;

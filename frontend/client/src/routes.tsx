@@ -12,6 +12,8 @@ import PalavraChavePage from "./pages/PalavraChave/PalavraChavePage";
 import PalavraChaveForm from "./pages/PalavraChave/PalavraChaveForm";
 import TrabalhoPage from "./pages/Trabalho/TrabalhoPage";
 import TrabalhoForm from "./pages/Trabalho/TrabalhoForm";
+import ArquivoPage from "./pages/Arquivo/ArquivoPage";
+import ArquivoForm from "./pages/Arquivo/ArquivoForm";
 
 
 function AppRoutes(){
@@ -43,6 +45,9 @@ function AppRoutes(){
                     <Route path="/trabalhos" element={<TrabalhoPage /> } />
                     <Route path="/novo-trabalho" element={<TrabalhoForm />} />
                     <Route path="/editar-trabalho/:id" element={<TrabalhoForm />} />
+
+                    <Route path="/arquivos" element={<ArquivoPage />} />
+                    <Route path="/novo-arquivo" element={<ArquivoForm />} />
                 </Route>
             </Routes>
         </BrowserRouter>
