@@ -46,14 +46,13 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "apps.pessoa",
-    "apps.autor",
-    "apps.orientador", 
     "apps.departamento",
     "apps.usuario",
     "apps.curso",
     "apps.trabalho",   
     "apps.palavra_chave",
     "apps.arquivo",
+    "apps.participacao_trabalho"
     
 ]
 

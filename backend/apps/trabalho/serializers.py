@@ -1,16 +1,13 @@
 from rest_framework import serializers
 from .models import Trabalho
 from apps.arquivo.models import Arquivo
-from apps.autor.models import Autor
 from apps.palavra_chave.models import PalavraChave
 from apps.arquivo.serializers import ArquivoSerializer
 
 import hashlib
 
 class TrabalhoSerializer(serializers.ModelSerializer):
-    autores = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Autor.objects.all()
-    )
+    
     palavras_chave = serializers.PrimaryKeyRelatedField(
         many=True, queryset=PalavraChave.objects.all()
     )
@@ -23,7 +20,6 @@ class TrabalhoSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         
-        autores = validated_data.pop('autores')
         palavras = validated_data.pop('palavras_chave')
         arquivo_file = validated_data.pop('arquivo')
 
@@ -33,7 +29,6 @@ class TrabalhoSerializer(serializers.ModelSerializer):
 
         # cria o trabalho
         trabalho = Trabalho.objects.create(**validated_data)
-        trabalho.autores.set(autores)
         trabalho.palavras_chave.set(palavras)
 
 
