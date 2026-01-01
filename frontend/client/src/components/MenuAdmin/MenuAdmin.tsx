@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
     HomeOutlined,
     UserOutlined,
-    TeamOutlined,
     ApartmentOutlined,
     BookOutlined,
     TagsOutlined,
@@ -25,12 +24,8 @@ function MenuAdmin() {
                 Home
             </Menu.Item>
 
-            <Menu.Item key="/autores" icon={<UserOutlined />}>
-                Autores
-            </Menu.Item>
-
-            <Menu.Item key="/orientadores" icon={<TeamOutlined />}>
-                Orientadores
+            <Menu.Item key="/pessoas" icon={<UserOutlined />}>
+                Pessoas
             </Menu.Item>
 
             <Menu.Item key="/departamentos" icon={<ApartmentOutlined />}>
