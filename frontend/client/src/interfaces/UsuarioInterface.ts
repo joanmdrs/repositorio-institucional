@@ -1,5 +1,7 @@
 export interface UsuarioInterface {
+    id?: number;
     username: string;
     password: string;
-    group: number;
+    email: string;
+    groups: number[];
 }
