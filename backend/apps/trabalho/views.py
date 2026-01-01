@@ -107,19 +107,6 @@ class FiltrarTrabalhosPeloAnoView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-class FiltrarTrabalhosPeloNomeAutorView(APIView):
-    def get(self, request):
-        try:
-            autor_nome = request.GET.get('autor_nome', None)
-            if autor_nome is not None: 
-                trabalhos = Trabalho.objects.filter(autores__nome_completo__icontains=autor_nome)
-                serializer = TrabalhoSerializer(trabalhos, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({"error": "Parâmetro 'autor_nome' é obrigatório."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class ExcluirTrabalhoView(APIView):
     def delete(self, request, trabalho_id):
