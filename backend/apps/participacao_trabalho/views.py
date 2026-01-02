@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import ParticipacaoTrabalho
 from .serializers import ParticipacaoTrabalhoSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 class CriarParticipacaoTrabalho(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         try:
             serializer = ParticipacaoTrabalhoSerializer(data=request.data, many=False)
@@ -18,16 +20,18 @@ class CriarParticipacaoTrabalho(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class ListarParticipacaoTrabalhoView(APIView):
-    def patch(self, request):
+    permission_classes = [AllowAny]
+    def get(self, request):
         try:
             objs_participacao_trabalho = ParticipacaoTrabalho.objects.all()
-            serializer = ParticipacaoTrabalhoSerializer(objs_participacao_trabalho)
+            serializer = ParticipacaoTrabalhoSerializer(objs_participacao_trabalho, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class ExcluirParticipacaoTrabalhoView(APIView):
+    permission_classes = [AllowAny]
     def delete(self, request, participacao_trabalho_id):
         try:
             participacao_trabalho = ParticipacaoTrabalho.objects.get(id=participacao_trabalho_id)
