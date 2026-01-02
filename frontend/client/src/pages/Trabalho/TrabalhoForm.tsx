@@ -5,9 +5,7 @@ import GenericForm from "../../components/GenericForm/GenericForm";
 import { useEffect, useState } from "react";
 import type { TrabalhoInterface } from "../../interfaces/TrabalhoInterface";
 import { atualizarTrabalho, criarTrabalho, obterTrabalhoPeloId } from "../../services/trabalho.service";
-import { listarAutores } from "../../services/autor.service";
 import { listarCursos } from "../../services/curso.service";
-import { listarOrientadores } from "../../services/orientador.service";
 import { listarPalavrasChave } from "../../services/palavra.chave.service";
 import type { SelectProps } from "antd";
 import type { DefaultOptionType } from "antd/es/select";
@@ -72,9 +70,6 @@ function TrabalhoForm () {
             label: String(item[labelKey]),
         }));
 
-    const [optionsAutores, setOptionsAutores] = useState<SelectProps["options"]>([]);
-    const [optionsOrientadores, setOptionsOrientadores] = useState<SelectProps["options"]>([]);
-    const [optionsCoorientadores, setOptionsCoorientadores] = useState<SelectProps["options"]>([]);
     const [optionsCurso, setOptionsCurso] = useState<SelectProps["options"]>([]);
     const [optionsPalavraChave, setOptionsPalavraChave] = useState<SelectProps["options"]>([])
     const existeArquivo = (isEdit && form.getFieldValue("arquivos")?.length > 0)
@@ -83,21 +78,14 @@ function TrabalhoForm () {
     useEffect(() => {
         const loadData = async () => {
             const [
-                autoresRes,
                 cursosRes,
-                orientadoresRes,
                 palavrasRes
             ] = await Promise.all([
-                listarAutores(),
                 listarCursos(),
-                listarOrientadores(),
                 listarPalavrasChave(),
             ]);
 
-            setOptionsAutores(mapOptions(autoresRes.data, "id", "nome"));
             setOptionsCurso(mapOptions(cursosRes.data, "id", "nome"));
-            setOptionsOrientadores(mapOptions(orientadoresRes.data, "id", "nome"));
-            setOptionsCoorientadores(mapOptions(orientadoresRes.data, "id", "nome"));
             setOptionsPalavraChave(mapOptions(palavrasRes.data, "id", "termo"));
 
         };
@@ -126,9 +114,7 @@ function TrabalhoForm () {
             }
         });
 
-        values.autores?.forEach((id) =>
-            formData.append("autores", String(id))
-        );
+       
 
         values.palavras_chave?.forEach((id) =>
             formData.append("palavras_chave", String(id))
@@ -275,7 +261,7 @@ function TrabalhoForm () {
                     </div>
 
                     <div> 
-                        <Form.Item 
+                        {/* <Form.Item 
                             label="Autores" 
                             name="autores" 
                             style={{width: '15%'}}
@@ -312,7 +298,7 @@ function TrabalhoForm () {
                                 options={optionsCoorientadores}
                                 popupMatchSelectWidth={false}
                             />
-                        </Form.Item>
+                        </Form.Item> */}
                     </div>
 
                     {isEdit && form.getFieldValue("arquivos")?.length > 0 && (

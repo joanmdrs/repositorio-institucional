@@ -12,14 +12,14 @@ class Pessoa(models.Model):
     
     usuario = models.OneToOneField(
         Usuario,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="pessoa"
     )
 
     nome = models.CharField(max_length=255)
-    cpf = models.CharField(max_length=14, unique=True)
+    cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(blank=True, null=True)
     telefone = models.CharField(blank=True, null=True, max_length=11)
     titulacao_maxima = models.CharField(max_length=50, choices=TITULACAO_CHOICES, null=True, blank=True)   

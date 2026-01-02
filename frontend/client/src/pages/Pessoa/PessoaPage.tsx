@@ -32,7 +32,7 @@ function PessoaPage() {
                     icon={<PlusOutlined />}
                     onClick={() => navigate("/nova-pessoa")}
                 >
-                    Novo Autor
+                    Nova Pessoa
                 </Button>
             </Space>
 

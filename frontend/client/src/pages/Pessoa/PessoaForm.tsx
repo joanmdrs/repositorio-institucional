@@ -10,6 +10,11 @@ import { useEntityForm } from "../../hooks/useEntityForm";
 import GenericForm from "../../components/GenericForm/GenericForm";
 import type { PessoaInterface } from "../../interfaces/PessoaInterface";
 import { atualizarPessoa, criarPessoa, obterPessoaPeloId } from "../../services/pessoa.service";
+import { useEffect, useState } from "react";
+import { listarGrupos } from "../../services/usuario.service";
+import type { GroupInterface } from "../../interfaces/Group.interface";
+import { validarCPF } from "../../utils/validators";
+import { maskCPF, maskTelefone } from "../../utils/mask";
 
 const optionsTitulacao = [
     {
@@ -49,6 +54,24 @@ function PessoaForm() {
         redirectTo: "/pessoas",
         getTitle: (isEdit) => (isEdit ? "Editar Pessoa" : "Nova Pessoa"),
     });
+
+    const [optionsGrupos, setOptionsGrupos] = useState([])
+
+    useEffect(() => {
+        const loadData = async () => {
+            const resGrupos = await listarGrupos()
+            const grupos = resGrupos.data.map((item: GroupInterface) => {
+                return {
+                    value: item.id,
+                    label: item.name
+                }
+            })
+            setOptionsGrupos(grupos)
+
+            
+        }
+        loadData();
+    }, [])
 
     return (
         <div>
@@ -102,9 +125,20 @@ function PessoaForm() {
                         name="cpf"
                         rules={[
                             { required: true, message: "Informe o CPF" },
+                            {
+                                validator: (_, value) =>
+                                    value && validarCPF(value)
+                                        ? Promise.resolve()
+                                        : Promise.reject("CPF inválido"),
+                            },
                         ]}
                     >
-                        <Input />
+                        <Input
+                            maxLength={14}
+                            onChange={(e) =>
+                                form.setFieldValue("cpf", maskCPF(e.target.value))
+                            }
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -122,10 +156,25 @@ function PessoaForm() {
                         label="Telefone"
                         name="telefone"
                         rules={[
-                            { required: true, message: "Informe o email" },
+                            { required: true, message: "Informe o telefone" },
                         ]}
                     >
-                        <Input />
+                        <Input
+                            maxLength={15}
+                            onChange={(e) =>
+                                form.setFieldValue("telefone", maskTelefone(e.target.value))
+                            }
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Titulação"
+                        name="titulacao_maxima"
+                        rules={[{ required: true, message: 'Por favor, selecione uma titulação!'}]}
+                    >
+                        <Select
+                            showSearch 
+                            options={optionsTitulacao} />
                     </Form.Item>
 
                     <Form.Item 
@@ -141,7 +190,9 @@ function PessoaForm() {
                     <Form.Item
                         label="Password"
                         name="password"
-                        rules={[{ required: true, message: 'Por favor, informe sua senha!' }]}
+                        rules={[
+                            { required: !isEdit, message: 'Por favor, informe sua senha!' }
+                        ]}
                     >
                         <Input.Password name="password" />
                     </Form.Item>
@@ -154,9 +205,8 @@ function PessoaForm() {
                         <Select
                             mode="multiple"
                             showSearch 
-                            options={optionsTitulacao} />
+                            options={optionsGrupos} />
                     </Form.Item>
-
 
 
                     {/* Ações */}
@@ -172,7 +222,7 @@ function PessoaForm() {
 
                         <Button
                             icon={<ArrowLeftOutlined />}
-                            onClick={() => navigate("/autores")}
+                            onClick={() => navigate("/pessoas")}
                         >
                             Voltar
                         </Button>

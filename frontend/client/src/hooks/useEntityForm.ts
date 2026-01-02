@@ -1,6 +1,7 @@
 import { Form, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { onlyNumbers } from "../utils/sanitize";
 
 interface UseEntityFormProps<T> {
     getById: (id: number) => Promise<{ data: any }>;
@@ -46,18 +47,37 @@ export function useEntityForm<T>({
         loadData();
     }, [id, form]);
 
+    const sanitizePayload = (values: any) => {
+        const numericFields = ["cpf", "telefone"];
+        const payload = { ...values };
+
+        numericFields.forEach((field) => {
+            if (payload[field]) {
+                payload[field] = onlyNumbers(payload[field]);
+            }
+        });
+
+        return payload;
+    };
+
+
+
     const handleSubmit = async (values: T) => {
         try {
             setLoading(true);
+
+            const payload = sanitizePayload(values);
+
             if (isEdit) {
-                await update(Number(id), values);
+                await update(Number(id), payload);
             } else {
-                await create(values);
+                await create(payload);
             }
 
-
             message.success(
-                isEdit ? "Registro atualizado com sucesso" : "Registrado realizado com sucesso"
+                isEdit
+                    ? "Registro atualizado com sucesso"
+                    : "Registro realizado com sucesso"
             );
             navigate(redirectTo);
         } catch {
@@ -66,6 +86,7 @@ export function useEntityForm<T>({
             setLoading(false);
         }
     };
+
 
     return {
         form,
