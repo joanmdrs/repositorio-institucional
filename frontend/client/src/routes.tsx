@@ -12,6 +12,8 @@ import ArquivoPage from "./pages/Arquivo/ArquivoPage";
 import ArquivoForm from "./pages/Arquivo/ArquivoForm";
 import PessoaPage from "./pages/Pessoa/PessoaPage";
 import PessoaForm from "./pages/Pessoa/PessoaForm";
+import ParticipacaoTrabalhoPage from "./pages/ParticipacaoTrabalho/ParticipacaoTrabalhoPage";
+import ParticipacaoTrabalhoForm from "./pages/ParticipacaoTrabalho/ParticipacaoTrabalhoForm";
 
 
 function AppRoutes(){
@@ -39,6 +41,9 @@ function AppRoutes(){
                     <Route path="/trabalhos" element={<TrabalhoPage /> } />
                     <Route path="/novo-trabalho" element={<TrabalhoForm />} />
                     <Route path="/editar-trabalho/:id" element={<TrabalhoForm />} />
+
+                    <Route path="/participacoes-trabalho" element={<ParticipacaoTrabalhoPage />} />
+                    <Route path="/nova-participacao" element={<ParticipacaoTrabalhoForm />} />
 
                     <Route path="/arquivos" element={<ArquivoPage />} />
                     <Route path="/novo-arquivo" element={<ArquivoForm />} />

@@ -9,6 +9,7 @@ import {
     FileTextOutlined,
     SettingOutlined,
     FolderOpenOutlined,
+    TeamOutlined
 } from "@ant-design/icons";
 
 function MenuAdmin() {
@@ -42,6 +43,10 @@ function MenuAdmin() {
 
             <Menu.Item key="/trabalhos" icon={<FileTextOutlined />}>
                 Trabalhos
+            </Menu.Item>
+
+            <Menu.Item key="/participacoes-trabalho" icon={<TeamOutlined />}>
+                Participações
             </Menu.Item>
 
             <Menu.Item key="/usuarios" icon={<SettingOutlined />}>
