@@ -1,42 +1,32 @@
 import api from "../api/api";
-import type { TrabalhoInterface } from "../interfaces/TrabalhoInterface";
-
+/* ================= CREATE ================= */
 export async function criarTrabalho(formData: FormData) {
-    const response = await api.post("trabalho/criar/", formData);
-    return response;
+    return api.post("trabalho/", formData);
 }
 
-export async function listarTrabalhos() { 
-    const response = await api.get("trabalho/listar/");
-    return response;
-}
-
+/* ================= UPDATE ================= */
 export async function atualizarTrabalho(id: number, formData: FormData) {
-    const response = await api.put(`trabalho/atualizar/${id}/`, formData);
-    return response;
+    return api.put(`trabalho/${id}/`, formData);
 }
 
+/* ================= DELETE ================= */
 export async function excluirTrabalho(id: number) {
-    const response = await api.delete(`trabalho/excluir/${id}/`);
-    return response;
+    return api.delete(`trabalho/${id}/`);
 }
 
-export async function filtrarTrabalhosPorTitulo(titulo: string) {
-    const response = await api.get(`trabalho/filtrar-pelo-titulo/?titulo=${titulo}`);
-    return response;
-}
-
-export async function filtrarTrabalhosPorAnoDefesa(ano_defesa: number) {
-    const response = await api.get(`trabalho/filtrar-pelo-ano/?ano=${ano_defesa}`);
-    return response;
-}
-
-export async function filtrarTrabalhosPeloNomeDoAutor(autor_nome: string) {
-    const response = await api.get(`trabalho/filtrar-pelo-nome-autor/?autor_nome=${autor_nome}`);
-    return response;
-}
-
+/* ================= GET BY ID ================= */
 export async function obterTrabalhoPeloId(id: number) {
-    const response = await api.get(`trabalho/obter-pelo-id/${id}/`)
-    return response
+    return api.get(`trabalho/${id}/`);
+}
+
+/* ================= LIST / SEARCH / PAGINATION ================= */
+interface ListarTrabalhosParams {
+    search?: string;
+    page?: number;
+}
+
+export async function listarTrabalhos(params?: ListarTrabalhosParams) {
+    return api.get("trabalho/", {
+        params
+    });
 }

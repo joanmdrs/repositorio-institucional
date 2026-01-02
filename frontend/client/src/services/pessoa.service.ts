@@ -1,27 +1,27 @@
 import api from "../api/api";
 import type { PessoaInterface } from "../interfaces/PessoaInterface";
 
-export async function criarPessoa(pessoaData: PessoaInterface) {
-    const response = await api.post("pessoa/criar/", pessoaData);
-    return response;
+interface ListarPessoasParams {
+    search?: string;
+    page?: number;
 }
 
-export async function atualizarPessoa(pessoaId: number, pessoaData: PessoaInterface) {
-    const response = await api.patch(`pessoa/atualizar/${pessoaId}/`, pessoaData);
-    return response;
+export function criarPessoa(data: PessoaInterface) {
+    return api.post("pessoa/", data);
 }
 
-export async function obterPessoaPeloId(pessoaId: number) {
-    const response = await api.get(`pessoa/obter-pelo-id/${pessoaId}/`);
-    return response;
+export function atualizarPessoa(id: number, data: PessoaInterface) {
+    return api.patch(`pessoa/${id}/`, data);
 }
 
-export async function listarPessoas() {
-    const response = await api.get("pessoa/listar/");
-    return response
+export function excluirPessoa(id: number) {
+    return api.delete(`pessoa/${id}/`);
 }
 
-export async function excluirPessoa(pessoaId: number) {
-    const response = await api.delete(`pessoa/excluir/${pessoaId}/`)
-    return response
+export function obterPessoaPeloId(id: number) {
+    return api.get(`pessoa/${id}/`);
+}
+
+export function listarPessoas(params?: ListarPessoasParams) {
+    return api.get("pessoa/", { params });
 }
