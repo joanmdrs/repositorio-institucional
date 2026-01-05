@@ -1,14 +1,30 @@
-import { Breadcrumb, Button, Form, Space, Select } from "antd";
+import { Breadcrumb, Button, Form, Space, Input, Select } from "antd";
 import { useEntityForm } from "../../hooks/useEntityForm";
 import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined } from "@ant-design/icons";
 import GenericForm from "../../components/GenericForm/GenericForm";
-import { useEffect, useState } from "react";
-import type { SelectProps } from "antd";
-import type { DefaultOptionType } from "antd/es/select";
+import { useState } from "react";
 import type { ParticipacaoTrabalhoInterface } from "../../interfaces/ParticipacaoTrabalho.interface";
-import { criarParticipacaoTrabalho, listarParticipacaoTrabalho } from "../../services/participacao.trabalho.service";
+import { criarParticipacaoTrabalho } from "../../services/participacao.trabalho.service";
+import ModalBuscaGenerico from "../../components/ModalBuscaGenerico/ModalBuscaGenerico";
 import { listarTrabalhos } from "../../services/trabalho.service";
+import type { TrabalhoInterface } from "../../interfaces/TrabalhoInterface";
+import { listarPessoas } from "../../services/pessoa.service";
+import type { PessoaInterface } from "../../interfaces/PessoaInterface";
 
+const optionsPapeis = [
+    {
+        value: "AUTOR",
+        label: "Autor"
+    }, 
+    {
+        value: "ORIENTADOR",
+        label: "Orientador"
+    },
+    {
+        value: "COORIENTADOR",
+        label: "Coorientador"
+    }
+]
 
 function ParticipacaoTrabalhoForm () {
     const {
@@ -26,36 +42,12 @@ function ParticipacaoTrabalhoForm () {
         getTitle: (isEdit) => (isEdit ? "Editar Participação" : "Nova Participação"),
     });
 
-    const mapOptions = <T,>(
-        data: T[],
-        valueKey: keyof T,
-        labelKey: keyof T
-    ): DefaultOptionType[] =>
-        data.map(item => ({
-            value: item[valueKey] as string | number,
-            label: String(item[labelKey]),
-        }));
+    const [openTrabalho, setOpenTrabalho] = useState(false);
+    const [openPessoa, setOpenPessoa] = useState(false);
 
-    const [optionsTrabalho, setOptionsTrabalho] = useState<SelectProps["options"]>([]);
-    const [optionsPessoas, setOptionsPessoas] = useState<SelectProps["options"]>([])
+    
+    
 
-    useEffect(() => {
-        const loadData = async () => {
-            const [
-                trabalhosRes,
-                pessoasRes
-            ] = await Promise.all([
-                listarTrabalhos(),
-                listarParticipacaoTrabalho(),
-            ]);
-
-            setOptionsTrabalho(mapOptions(trabalhosRes.data, "id", "nome"));
-            setOptionsPessoas(mapOptions(pessoasRes.data, "id", "termo"));
-
-        };
-
-        loadData();
-    }, []);
 
     return (
         <div>
@@ -94,33 +86,90 @@ function ParticipacaoTrabalhoForm () {
                     style={{ }}
                     onFinish={handleSubmit}
                 >
+                    
+                    <Form.Item
+                        label="Trabalho"
+                        required
+                    >
+                        <Space.Compact style={{ width: "100%" }}>
+                            <Form.Item
+                                name="trabalho_nome"
+                                noStyle
+                                rules={[
+                                    { required: true, message: "Selecione um trabalho" },
+                                ]}
+                            >
+                                <Input
+                                    placeholder="Selecione um trabalho"
+                                    readOnly
+                                    onClick={() => setOpenTrabalho(true)}
+                                />
+                            </Form.Item>
 
-                    <Form.Item 
-                        label="Trabalho" 
-                        name="trabalho" 
-                        style={{width: '100%'}}
-                        rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                        <Select
-                            defaultValue="Selecione"
-                            showSearch
-                            allowClear
-                            popupMatchSelectWidth={false}
-                            options={optionsTrabalho}
-                        />
+                            <Button onClick={() => setOpenTrabalho(true)}>
+                                Buscar
+                            </Button>
+                        </Space.Compact>
                     </Form.Item>
 
+                    <Form.Item
+                        name="trabalho"
+                        hidden
+                        rules={[
+                            { required: true, message: "Trabalho é obrigatório" },
+                        ]}
+                    />
+
+                    <Form.Item
+                        label="Pessoa"
+                        required
+                    >
+                        <Space.Compact style={{ width: "100%" }}>
+                            <Form.Item
+                                name="pessoa_nome"
+                                noStyle
+                                rules={[
+                                    { required: true, message: "Selecione uma pessoa" },
+                                ]}
+                            >
+                                <Input
+                                    placeholder="Selecione uma pessoa"
+                                    readOnly
+                                    onClick={() => setOpenPessoa(true)}
+                                />
+                            </Form.Item>
+
+                            <Button onClick={() => setOpenPessoa(true)}>
+                                Buscar
+                            </Button>
+                        </Space.Compact>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="pessoa"
+                        hidden
+                        rules={[
+                            { required: true, message: "Pessoa é obrigatória" },
+                        ]}
+                    />
+
                     <Form.Item 
-                        label="Pessoa" 
-                        name="pessoa" 
-                        style={{width: '100%'}}
-                        rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                        <Select
-                            defaultValue="Selecione"
-                            showSearch
-                            allowClear
-                            popupMatchSelectWidth={false}
-                            options={optionsPessoas}
-                        />
+                        name="papel" 
+                        label="Papel" 
+                        rules={[{required: true, message: "Selecione um papel"}]}
+                        
+                    >
+                        <Select showSearch options={optionsPapeis} placeholder="Selecione" />
+                    </Form.Item>
+
+                    
+
+                    <Form.Item 
+                        label="Ordem de autoria"
+                        name="ordem_autoria"
+                        rules={[{required: false, message: 'Por favor, informe a ordem de autoria'}]}
+                    >
+                        <Input type="number" />
                     </Form.Item>
 
                     {/* Ações */}
@@ -143,6 +192,64 @@ function ParticipacaoTrabalhoForm () {
                     </Space>
                 </Form>
             </GenericForm>
+
+            <ModalBuscaGenerico
+                open={openTrabalho}
+                title="Buscar Trabalho"
+                rowKey="id"
+                columns={[
+                    { title: "Título", dataIndex: "titulo" },
+                    { title: "Ano", dataIndex: "ano_defesa" },
+                ]}
+                fetchData={async ({ search, page }) => {
+                    const res = await listarTrabalhos({
+                        search,
+                        page,
+                    });
+                    return {
+                        results: res.data.results,
+                        count: res.data.count,
+                    };
+                }}
+                onSelect={(trabalho: TrabalhoInterface) => {
+                    form.setFieldsValue({
+                    trabalho: trabalho.id,
+                    trabalho_nome: trabalho.titulo,
+                    });
+                    setOpenTrabalho(false);
+                }}
+                onCancel={() => setOpenTrabalho(false)}
+            />
+
+            <ModalBuscaGenerico
+                open={openPessoa}
+                title="Buscar Pessoa"
+                rowKey="id"
+                columns={[
+                    { title: "Nome", dataIndex: "nome" },
+                    { title: "Cpf", dataIndex: "cpf" },
+                ]}
+                fetchData={async ({ search, page }) => {
+                    const res = await listarPessoas({
+                        search,
+                        page,
+                    });
+                    return {
+                        results: res.data.results,
+                        count: res.data.count,
+                    };
+                }}
+                onSelect={(pessoa: PessoaInterface) => {
+                    form.setFieldsValue({
+                        pessoa: pessoa.id,
+                        pessoa_nome: pessoa.nome,
+                    });
+                    setOpenPessoa(false);
+                }}
+                onCancel={() => setOpenPessoa(false)}
+            />
+
+
             
         </div>
     );

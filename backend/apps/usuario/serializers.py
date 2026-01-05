@@ -2,13 +2,13 @@ from rest_framework import serializers
 from .models import Usuario
 
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class UsuarioReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['id', 'username', 'email', 'is_staff', 'is_superuser']
         read_only_fields = ['id', 'is_staff', 'is_superuser']
 
-class CreateSerializer(serializers.ModelSerializer):
+class UsuarioWriteSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     class Meta:

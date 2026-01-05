@@ -1,12 +1,7 @@
-from django.urls import path
-from .views import CriarArquivoView, ListarArquivosView, ExcluirArquivoView, DownloadArquivoView
+from rest_framework.routers import DefaultRouter
+from .views import ArquivoViewSet
 
-app_name = "arquivo"
+router = DefaultRouter()
+router.register(r"arquivo", ArquivoViewSet, basename="arquivo")
 
-urlpatterns = [
-    path('criar/', CriarArquivoView.as_view(), name='criar-arquivo'),
-    path('listar/', ListarArquivosView.as_view(), name='listar-arquivos'),
-    path('excluir/<int:arquivo_id>/', ExcluirArquivoView.as_view(), name='excluir-arquivo'),
-    path('baixar/<int:arquivo_id>/', DownloadArquivoView.as_view()),
-
-]
+urlpatterns = router.urls

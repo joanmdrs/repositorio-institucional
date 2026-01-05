@@ -1,21 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CursoViewSet
 
-from .views import (
-    CriarCursoView,
-    ListarCursosView,
-    AtualizarCursoView,
-    ExcluirCursoView,
-    BuscarCursoPeloNomeView,
-    ObterCursoPeloIdView
-)
+router = DefaultRouter()
+router.register(r'', CursoViewSet, basename='curso')
 
-app_name = "curso"
+app_name = 'curso'
+
 urlpatterns = [
-    path("criar/", CriarCursoView.as_view(), name="criar_curso"),
-    path("listar/", ListarCursosView.as_view(), name="listar_cursos"),
-    path("atualizar/<int:curso_id>/", AtualizarCursoView.as_view(), name="atualizar_curso"),
-    path("excluir/<int:curso_id>/", ExcluirCursoView.as_view(), name="excluir_curso"),
-    path("buscar-pelo-nome/", BuscarCursoPeloNomeView.as_view(), name="buscar_curso_nome"), 
-    path("obter-pelo-id/<int:curso_id>/", ObterCursoPeloIdView.as_view(), name="obter_curso_pelo_id")
-]   
-
+    path('', include(router.urls)),
+]

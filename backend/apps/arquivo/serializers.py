@@ -1,10 +1,9 @@
 from rest_framework.serializers import ModelSerializer
-from apps.arquivo.models import Arquivo 
 from rest_framework import serializers
+from apps.arquivo.models import Arquivo
 
 class ArquivoSerializer(ModelSerializer):
-    trabalho_titulo = serializers.SerializerMethodField()
-
+    trabalho_titulo = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Arquivo
@@ -19,8 +18,6 @@ class ArquivoSerializer(ModelSerializer):
             "trabalho_titulo",
             "criado_em",
         ]
-    
+
     def get_trabalho_titulo(self, obj):
-        if obj.trabalho:
-            return obj.trabalho.titulo
-        return None  
+        return obj.trabalho.titulo if obj.trabalho else None

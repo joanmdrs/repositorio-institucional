@@ -15,8 +15,6 @@ function PessoaList() {
 
     const colunasPessoas = [
         { title: "Nome", dataIndex: "nome", key: "nome" },
-        { title: "CPF", dataIndex: "cpf", key: "cpf" },
-        { title: "Email", dataIndex: "email", key: "email" },
         {
             title: "Ações",
             key: "acoes",

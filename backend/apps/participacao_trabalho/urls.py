@@ -1,11 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import ParticipacaoTrabalhoViewSet
 
-from .views import CriarParticipacaoTrabalho, ListarParticipacaoTrabalhoView, ExcluirParticipacaoTrabalhoView
+router = DefaultRouter()
+router.register(r'', ParticipacaoTrabalhoViewSet, basename='participacao_trabalho')
 
-app_name = "participacao_trabalho"
+app_name = 'participacao_trabalho'
 
 urlpatterns = [
-    path("criar/", CriarParticipacaoTrabalho.as_view(), name="criar_participacao_trabalho"),
-    path("listar/", ListarParticipacaoTrabalhoView.as_view(), name="listar_participacao_trabalho"),
-    path("excluir/<int:participacao_trabalho_id>/", ExcluirParticipacaoTrabalhoView.as_view(), name="excluir_participacao_trabalho")
+    path('', include(router.urls)),
 ]
