@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import DepartamentoViewSett
+from .views import DepartamentoViewSet
 
 router = DefaultRouter()
-router.register(r'', DepartamentoViewSett, basename='departamento')
+router.register(r'', DepartamentoViewSet, basename='departamento')
 
 app_name = 'departamento'
 

@@ -1,7 +1,12 @@
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ArquivoViewSet
 
 router = DefaultRouter()
-router.register(r"arquivo", ArquivoViewSet, basename="arquivo")
+router.register(r'', ArquivoViewSet, basename='arquivo')
 
-urlpatterns = router.urls
+app_name = 'arquivo'
+
+urlpatterns = [
+    path('', include(router.urls)),
+]

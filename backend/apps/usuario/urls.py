@@ -1,9 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UsuarioViewSet
+from .views import UsuarioViewSet, GroupViewSet
 
 router = DefaultRouter()
 router.register(r'', UsuarioViewSet, basename='usuario')
+router.register(r'groups', GroupViewSet, basename='groups')
 
 app_name = 'usuario'
 
