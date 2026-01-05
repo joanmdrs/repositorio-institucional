@@ -1,22 +1,18 @@
 import api from "../api/api";
 
 
-export async function criarArquivo(formData: FormData) {
-    const response = await api.post("arquivo/criar/", formData);
-    return response;
+export function criarArquivo(formData: FormData) {
+    return api.post("arquivo/", formData);
 }
 
-export async function listarArquivos() { 
-    const response = await api.get("arquivo/listar/");
-    return response;
+export function listarArquivos() { 
+    return api.get("arquivo/");
 }
 
-export async function excluirArquivo(id: number) {
-    const response = await api.delete(`arquivo/excluir/${id}/`);
-    return response;
+export function excluirArquivo(id: number) {
+    return api.delete(`arquivo/${id}/`);
 }
 
-export async function obterArquivoPeloId(id: number) {
-    const response = await api.get(`arquivo/obter-pelo-id/${id}/`);
-    return response
+export function obterArquivoPeloId(id: number) {
+    return api.get(`arquivo/${id}/`);
 }

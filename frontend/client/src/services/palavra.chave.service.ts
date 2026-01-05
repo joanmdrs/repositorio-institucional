@@ -1,32 +1,27 @@
 import api from "../api/api";
 import type { PalavraChaveInterface } from "../interfaces/PalavraChaveInterface";
 
-export async function criarPalavraChave(dados: PalavraChaveInterface) {
-    const response = await api.post("palavra_chave/criar/", {dados_palavra_chave: dados});
-    return response;
+interface ListarPalavrasChaveParams {
+    search?: string;
+    page?: number;
 }
 
-export async function listarPalavrasChave() { 
-    const response = await api.get("palavra_chave/listar/");
-    return response;
+export function criarPalavraChave(data: PalavraChaveInterface) {
+    return api.post("palavra_chave/", data);
 }
 
-export async function atualizarPalavraChave(id: number, dadosAtualizados: PalavraChaveInterface) {
-    const response = await api.patch(`palavra_chave/atualizar/${id}/`, {dados_palavra_chave_atualizados: dadosAtualizados});
-    return response;
+export function listarPalavrasChave(params?: ListarPalavrasChaveParams) { 
+    return api.get("palavra_chave/", {params});
 }
 
-export async function excluirPalavraChave(id: number) {
-    const response = await api.delete(`palavra_chave/excluir/${id}/`);
-    return response;
+export function atualizarPalavraChave(id: number, data: PalavraChaveInterface) {
+    return api.patch(`palavra_chave/${id}/`, data);
 }
 
-export async function filtrarPalavrasChavePorNome(termo: string) {
-    const response = await api.get(`palavra_chave/buscar-pelo-termo/?termo=${termo}`);
-    return response;
-}   
+export function excluirPalavraChave(id: number) {
+    return api.delete(`palavra_chave/${id}/`);
+}
 
-export async function obterPalavraChavePeloId(id: number) {
-    const response = await api.get(`palavra_chave/obter-pelo-id/${id}/`);
-    return response;
+export function obterPalavraChavePeloId(id: number) {
+    return api.get(`palavra_chave/${id}/`);
 }

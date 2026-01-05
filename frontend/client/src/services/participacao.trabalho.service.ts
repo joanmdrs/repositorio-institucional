@@ -1,17 +1,19 @@
 import api from "../api/api";
 import type { ParticipacaoTrabalhoInterface } from "../interfaces/ParticipacaoTrabalho.interface";
 
-export async function criarParticipacaoTrabalho(data: ParticipacaoTrabalhoInterface) {
-    const response = api.post('participacao_trabalho/criar/', data);
-    return response
+interface ListarParticipacaoTrabalhoParams {
+    search?: string;
+    page?: number;
 }
 
-export async function listarParticipacaoTrabalho() {
-    const response = api.get('participacao_trabalho/listar/');
-    return response;
+export function criarParticipacaoTrabalho(data: ParticipacaoTrabalhoInterface) {
+    return api.post('participacao_trabalho/', data);
 }
 
-export async function excluirParticipacaoTrabalho(id: number) {
-    const response = await api.delete(`participacao_trabalho/excluir/${id}/`);
-    return response;
+export function listarParticipacaoTrabalho(params?: ListarParticipacaoTrabalhoParams) {
+    return api.get('participacao_trabalho/', {params});
+}
+
+export function excluirParticipacaoTrabalho(id: number) {
+    return api.delete(`participacao_trabalho/${id}/`);
 }

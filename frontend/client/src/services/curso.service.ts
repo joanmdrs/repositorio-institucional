@@ -1,32 +1,27 @@
 import api from "../api/api";
 import type { CursoInterface } from "../interfaces/CursoInterface"; 
 
-export async function criarCurso(dados_curso: CursoInterface) {
-    const response = await api.post("curso/criar/", {dados_curso: dados_curso});
-    return response;
+interface ListarCursosParams {
+    search?: string;
+    page?: number;
 }
 
-export async function listarCursos() { 
-    const response = await api.get("curso/listar/");
-    return response;
+export function criarCurso(data: CursoInterface) {
+    return api.post("curso/", data);
 }
 
-export async function atualizarCurso(id: number, dados_curso_atualizados: CursoInterface) {
-    const response = await api.patch(`curso/atualizar/${id}/`, {dados_curso_atualizados: dados_curso_atualizados});
-    return response;
+export function listarCursos(params?: ListarCursosParams) { 
+    return api.get("curso/", {params});
 }
 
-export async function excluirCurso(id: number) {
-    const response = await api.delete(`curso/excluir/${id}/`);
-    return response;
+export function atualizarCurso(id: number, data: CursoInterface) {
+    return api.patch(`curso/${id}/`, data);
 }
 
-export async function filtrarCursosPorNome(nome: string) {
-    const response = await api.get(`curso/filtrar-pelo-nome/?curso_nome=${nome}`);
-    return response;
+export function excluirCurso(id: number) {
+    return api.delete(`curso/${id}/`);
 }
 
-export async function obterCursoPeloId(id: number){
-    const response = await api.get(`curso/obter-pelo-id/${id}/`)
-    return response
+export function obterCursoPeloId(id: number){
+    return api.get(`curso/${id}/`)
 }

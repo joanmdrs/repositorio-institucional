@@ -1,33 +1,28 @@
 import api from "../api/api";
 import type { DepartamentoInterface } from "../interfaces/DepartamentoInterface";
 
-export async function criarDepartamento(data: DepartamentoInterface) {
-    const response = await api.post("departamento/criar/", data);
-    return response;
+interface ListarDepartamentosParams {
+    search?: string;
+    page?: number;
 }
 
-export async function listarDepartamentos() { 
-    const response = await api.get("departamento/listar/");
-    return response;
+export function criarDepartamento(data: DepartamentoInterface) {
+    return api.post("departamento/", data);
 }
 
-export async function atualizarDepartamento(id: number, data: DepartamentoInterface) {
-    const response = await api.put(`departamento/atualizar/${id}/`, data);
-    return response;
+export function listarDepartamentos(params?: ListarDepartamentosParams) { 
+    return api.get("departamento/", { params });
 }
 
-export async function excluirDepartamento(id: number) {
-    const response = await api.delete(`departamento/excluir/${id}/`);
-    return response;
+export function atualizarDepartamento(id: number, data: DepartamentoInterface) {
+    return api.put(`departamento/${id}/`, data);
 }
 
-export async function filtrarDepartamentosPorNome(nome: string) {
-    const response = await api.get(`departamento/filtrar-pelo-nome/?departamento_nome=${nome}`);
-    return response;
+export function excluirDepartamento(id: number) {
+    return api.delete(`departamento/${id}/`);
 }
 
-export async function obterDepartamentoPeloId(id: number) {
-    const response = await api.get(`departamento/obter-pelo-id/${id}/`)
-    return response
-    
+
+export function obterDepartamentoPeloId(id: number) {
+    return api.get(`departamento/obter-pelo-id/${id}/`)    
 }

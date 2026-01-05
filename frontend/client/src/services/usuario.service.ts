@@ -1,27 +1,27 @@
 import api from "../api/api";
 import type { UsuarioInterface } from "../interfaces/UsuarioInterface";
 
-export async function criarUsuario(usuarioData: UsuarioInterface) {
-    const response = await api.post("/usuario/criar/", usuarioData)
-    return response
+interface ListarUsuariosParams {
+    search?: string;
+    page?: number;
 }
 
-export async function listarUsuarios() {
-    const response = await api.get("usuario/listar/")
-    return response
+export function criarUsuario(data: UsuarioInterface) {
+    return api.post("/usuario/", data)
 }
 
-export async function obterUsuarioPeloId(usuarioId: number) {
-    const response = await api.get(`usuario/obter-pelo-id/${usuarioId}/`)
-    return response
+export function listarUsuarios(params?: ListarUsuariosParams) {
+    return api.get("usuario/", {params})
 }
 
-export async function excluirUsuario(usuarioId: number) {
-    const response = await api.delete(`usuario/excluir/${usuarioId}/`)
-    return response
+export function obterUsuarioPeloId(id: number) {
+    return api.get(`usuario/${id}/`)
 }
 
-export async function listarGrupos() {
-    const response = await api.get("usuario/grupos/listar/")
-    return response
+export function excluirUsuario(id: number) {
+    return api.delete(`usuario/${id}/`)
+}
+
+export function listarGrupos() {
+    return api.get("usuario/groups/")
 }
