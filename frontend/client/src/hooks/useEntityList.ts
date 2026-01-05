@@ -1,26 +1,44 @@
 import { useEffect, useState } from "react";
 import { message } from "antd";
-import type { AutorInterface } from "../interfaces/AutorInterface";
+import type { AxiosResponse } from "axios";
+
+interface ApiListResponse<T> {
+    results?: T[];
+    data?: T[];
+}
 
 interface UseEntityListProps<T> {
-    fetchAll: () => Promise<{ data: T[] }>;
-    deleteById?: (id: number) => Promise<{data: T[]}>;
+    fetchAll: (params?: any) => Promise<AxiosResponse<ApiListResponse<T>>>;
+    deleteById?: (id: number) => Promise<AxiosResponse<any>>;
+    initialParams?: any;
 }
 
 export function useEntityList<T>({
     fetchAll,
     deleteById,
+    initialParams,
 }: UseEntityListProps<T>) {
     const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState(false);
+    const [params, setParams] = useState(initialParams);
 
-    const loadData = async () => {
+    const loadData = async (customParams?: any) => {
         try {
             setLoading(true);
-            const response = await fetchAll();
-            setData(response.data);
-        } catch {
+
+            const response = await fetchAll(customParams ?? params);
+
+            // DRF pagination OU lista simples
+            const list =
+                response.data?.results ??
+                response.data?.data ??
+                [];
+
+            setData(list);
+        } catch (error) {
+            console.error(error);
             message.error("Erro ao carregar dados");
+            setData([]);
         } finally {
             setLoading(false);
         }
@@ -32,8 +50,9 @@ export function useEntityList<T>({
         try {
             await deleteById(id);
             message.success("Registro excluído com sucesso");
-            setData((prev) => prev.filter((item: any) => item.id !== id));
-        } catch {
+            setData((prev: any[]) => prev.filter(item => item.id !== id));
+        } catch (error) {
+            console.error(error);
             message.error("Erro ao excluir registro");
         }
     };
@@ -47,5 +66,6 @@ export function useEntityList<T>({
         loading,
         reload: loadData,
         handleDelete,
+        setParams,
     };
 }
