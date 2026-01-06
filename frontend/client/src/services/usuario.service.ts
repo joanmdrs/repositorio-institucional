@@ -23,5 +23,5 @@ export function excluirUsuario(id: number) {
 }
 
 export function listarGrupos() {
-    return api.get("usuario/groups/")
+    return api.get("groups/")
 }
