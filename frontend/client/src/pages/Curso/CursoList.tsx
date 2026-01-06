@@ -18,7 +18,7 @@ function CursoList() {
         { title: "Nome", dataIndex: "nome", key: "nome" },
         { title: "Sigla", dataIndex: "sigla", key: "sigla" },
         { title: "Nível", dataIndex: "nivel", key: "nivel"},
-        { title: "Departamento", dataIndex: "departamento", key: "departamento"},
+        { title: "Departamento", dataIndex: "departamento_nome", key: "departamento_nome"},
         {
             title: "Ações",
             key: "acoes",
