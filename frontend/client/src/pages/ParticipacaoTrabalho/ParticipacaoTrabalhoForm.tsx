@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Form, Space, Input, Select } from "antd";
 import { useEntityForm } from "../../hooks/useEntityForm";
-import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined, ZhihuCircleFilled } from "@ant-design/icons";
 import GenericForm from "../../components/GenericForm/GenericForm";
 import { useState } from "react";
 import type { ParticipacaoTrabalhoInterface } from "../../interfaces/ParticipacaoTrabalho.interface";
@@ -83,7 +83,7 @@ function ParticipacaoTrabalhoForm () {
                 <Form
                     form={form}
                     layout="vertical"
-                    style={{ }}
+                    style={{maxWidth: "600px" }}
                     onFinish={handleSubmit}
                 >
                     
@@ -157,7 +157,7 @@ function ParticipacaoTrabalhoForm () {
                         name="papel" 
                         label="Papel" 
                         rules={[{required: true, message: "Selecione um papel"}]}
-                        
+
                     >
                         <Select showSearch options={optionsPapeis} placeholder="Selecione" />
                     </Form.Item>
