@@ -10,7 +10,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class UsuarioReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'is_staff', 'is_superuser']
+        fields = ['id', 'username', 'email', 'is_staff', 'is_superuser', 'groups']
         read_only_fields = ['id', 'is_staff', 'is_superuser']
 
 class UsuarioWriteSerializer(serializers.ModelSerializer):
