@@ -14,6 +14,8 @@ import PessoaPage from "./pages/Pessoa/PessoaPage";
 import PessoaForm from "./pages/Pessoa/PessoaForm";
 import ParticipacaoTrabalhoPage from "./pages/ParticipacaoTrabalho/ParticipacaoTrabalhoPage";
 import ParticipacaoTrabalhoForm from "./pages/ParticipacaoTrabalho/ParticipacaoTrabalhoForm";
+import UsuarioPage from "./pages/Usuario/UsuarioPage";
+import UsuarioForm from "./pages/Usuario/UsuarioForm";
 
 
 function AppRoutes(){
@@ -44,6 +46,10 @@ function AppRoutes(){
 
                     <Route path="/participacoes-trabalho" element={<ParticipacaoTrabalhoPage />} />
                     <Route path="/nova-participacao" element={<ParticipacaoTrabalhoForm />} />
+
+                    <Route path="/usuarios" element={<UsuarioPage />} />
+                    <Route path="/novo-usuario" element={<UsuarioForm />} />
+                    <Route path="/editar-usuario/:id" element={<UsuarioForm />} />
 
                     <Route path="/arquivos" element={<ArquivoPage />} />
                     <Route path="/novo-arquivo" element={<ArquivoForm />} />
