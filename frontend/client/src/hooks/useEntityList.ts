@@ -22,6 +22,10 @@ export function useEntityList<T>({
     const [loading, setLoading] = useState(false);
     const [params, setParams] = useState(initialParams);
 
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<T | null>(null);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+
     const loadData = async (customParams?: any) => {
         try {
             setLoading(true);
@@ -50,10 +54,37 @@ export function useEntityList<T>({
         try {
             await deleteById(id);
             message.success("Registro excluído com sucesso");
-            setData((prev: any[]) => prev.filter(item => item.id !== id));
+            setData(prev => prev.filter(item => item.id !== id));
         } catch (error) {
             console.error(error);
             message.error("Erro ao excluir registro");
+        }
+    };
+
+    const requestDelete = (item: T) => {
+        setSelectedItem(item);
+        setConfirmOpen(true);
+    };
+
+    const cancelDelete = () => {
+        setConfirmOpen(false);
+        setSelectedItem(null);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteById || !selectedItem) return;
+
+        try {
+            setConfirmLoading(true);
+            await deleteById(selectedItem.id);
+            message.success("Registro excluído com sucesso");
+            setData(prev => prev.filter(item => item.id !== selectedItem.id));
+            cancelDelete();
+        } catch (error) {
+            console.error(error);
+            message.error("Erro ao excluir registro");
+        } finally {
+            setConfirmLoading(false);
         }
     };
 
@@ -65,7 +96,15 @@ export function useEntityList<T>({
         data,
         loading,
         reload: loadData,
-        handleDelete,
         setParams,
+        handleDelete,
+        confirmState: {
+            open: confirmOpen,
+            item: selectedItem,
+            loading: confirmLoading,
+        },
+        requestDelete,
+        confirmDelete,
+        cancelDelete,
     };
 }

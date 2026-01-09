@@ -1,14 +1,21 @@
-import { Button, Popconfirm, Space, Table } from "antd";
+import { Button, Space, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEntityList } from "../../hooks/useEntityList";
 import type { TrabalhoInterface } from "../../interfaces/TrabalhoInterface";
 import { excluirTrabalho, listarTrabalhos } from "../../services/trabalho.service";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 
 
 function TrabalhoList() {
     const navigate = useNavigate();
 
-    const { data, loading, handleDelete } =
+    const { 
+        data, 
+        loading, 
+        confirmState,
+        requestDelete,
+        confirmDelete,
+        cancelDelete } =
         useEntityList<TrabalhoInterface>({
         fetchAll: listarTrabalhos,
         deleteById: excluirTrabalho,
@@ -29,28 +36,41 @@ function TrabalhoList() {
                         Editar
                     </Button>
 
-                    <Popconfirm
-                        title="Deseja realmente excluir este trabalho?"
-                        okText="Sim"
-                        cancelText="Não"
-                        onConfirm={() => handleDelete(Number(record.id))}
+                    <Button
+                        type="link"
+                        danger
+                        onClick={() => requestDelete(record)}
                     >
-                        <Button type="link" danger>
-                            Excluir
-                        </Button>
-                    </Popconfirm>
+                        Excluir
+                    </Button>
                 </Space>
             ),
         },
     ];
 
     return (
-        <Table
-            loading={loading}
-            dataSource={data}
-            columns={colunasTrabalho}
-            rowKey="id"
-        />
+        <>
+            <Table
+                loading={loading}
+                dataSource={data}
+                columns={colunasTrabalho}
+                rowKey="id"
+            />
+            <ConfirmModal
+                open={confirmState.open}
+                title="Confirmar exclusão"
+                danger
+                loading={confirmState.loading}
+                confirmText="Excluir"
+                description={
+                    <p>
+                        Tem certeza que deseja excluir ?
+                    </p>
+                }
+                onConfirm={confirmDelete}
+                onCancel={cancelDelete}
+            />
+        </>
     );
 }
 

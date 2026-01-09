@@ -1,13 +1,19 @@
-import { Button, Popconfirm, Space, Table } from "antd";
+import { Button, Space, Table } from "antd";
 import { useEntityList } from "../../hooks/useEntityList";
 import type { ArquivoDetail } from "../../interfaces/ArquivoInterface";
 import { excluirArquivo, listarArquivos } from "../../services/arquivo.service";
 import { formatarDatetime } from "../../utils/converteDateTime";
-
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 
 function ArquivoList() {
 
-    const { data, loading, handleDelete } =
+    const { 
+        data, 
+        loading, 
+        confirmState,
+        requestDelete,
+        confirmDelete,
+        cancelDelete } =
         useEntityList<ArquivoDetail>({
         fetchAll: listarArquivos,
         deleteById: excluirArquivo,
@@ -33,28 +39,42 @@ function ArquivoList() {
                         Visualizar
                     </Button>
 
-                    <Popconfirm
-                        title="Deseja realmente excluir este trabalho?"
-                        okText="Sim"
-                        cancelText="Não"
-                        onConfirm={() => handleDelete(Number(record.id))}
+                    <Button
+                        type="link"
+                        danger
+                        onClick={() => requestDelete(record)}
                     >
-                        <Button type="link" danger>
-                            Excluir
-                        </Button>
-                    </Popconfirm>
+                        Excluir
+                    </Button>
                 </Space>
             ),
         },
     ];
 
     return (
-        <Table
-            loading={loading}
-            dataSource={data}
-            columns={colunasArquivo}
-            rowKey="id"
-        />
+        <>
+            <Table
+                loading={loading}
+                dataSource={data}
+                columns={colunasArquivo}
+                rowKey="id"
+            />
+
+            <ConfirmModal
+                open={confirmState.open}
+                title="Confirmar exclusão"
+                danger
+                loading={confirmState.loading}
+                confirmText="Excluir"
+                description={
+                    <p>
+                        Tem certeza que deseja excluir ?
+                    </p>
+                }
+                onConfirm={confirmDelete}
+                onCancel={cancelDelete}
+            />
+        </>
     );
 }
 

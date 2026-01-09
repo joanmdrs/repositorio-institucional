@@ -1,20 +1,28 @@
-import { Button, Popconfirm, Space, Table } from "antd";
+import { Button, Space, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEntityList } from "../../hooks/useEntityList";
 import type { DepartamentoInterface } from "../../interfaces/DepartamentoInterface";
 import { excluirDepartamento, listarDepartamentos } from "../../services/departamento.service";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 
 
 function DepartamentoList() {
     const navigate = useNavigate();
 
-    const { data, loading, handleDelete } =
+    const { 
+        data, 
+        loading,
+        confirmState,
+        requestDelete,
+        confirmDelete,
+        cancelDelete } =
         useEntityList<DepartamentoInterface>({
         fetchAll: listarDepartamentos,
         deleteById: excluirDepartamento,
     });
 
     const colunasDepartamentos = [
+        { title: "ID", dataIndex: "id", key: "id"},
         { title: "Nome", dataIndex: "nome", key: "nome" },
         { title: "Sigla", dataIndex: "sigla", key: "sigla" },
         { title: "Código", dataIndex: "codigo", key: "codigo" },
@@ -30,28 +38,42 @@ function DepartamentoList() {
                         Editar
                     </Button>
 
-                    <Popconfirm
-                        title="Deseja realmente excluir este departamento?"
-                        okText="Sim"
-                        cancelText="Não"
-                        onConfirm={() => handleDelete(Number(record.id))}
+                    <Button
+                        type="link"
+                        danger
+                        onClick={() => requestDelete(record)}
                     >
-                        <Button type="link" danger>
-                            Excluir
-                        </Button>
-                    </Popconfirm>
+                        Excluir
+                    </Button>
                 </Space>
             ),
         },
     ];
 
     return (
-        <Table
-            loading={loading}
-            dataSource={data}
-            columns={colunasDepartamentos}
-            rowKey="id"
-        />
+        <>
+            <Table
+                loading={loading}
+                dataSource={data}
+                columns={colunasDepartamentos}
+                rowKey="id"
+            />
+            <ConfirmModal
+                open={confirmState.open}
+                title="Confirmar exclusão"
+                danger
+                loading={confirmState.loading}
+                confirmText="Excluir"
+                description={
+                    <p>
+                        Tem certeza que deseja excluir ?
+                    </p>
+                }
+                onConfirm={confirmDelete}
+                onCancel={cancelDelete}
+            />
+        </>
+        
     );
 }
 
