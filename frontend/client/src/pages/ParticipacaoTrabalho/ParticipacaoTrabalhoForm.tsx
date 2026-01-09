@@ -1,10 +1,10 @@
 import { Breadcrumb, Button, Form, Space, Input, Select } from "antd";
 import { useEntityForm } from "../../hooks/useEntityForm";
-import { ArrowLeftOutlined, DeleteOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined, ZhihuCircleFilled } from "@ant-design/icons";
+import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined } from "@ant-design/icons";
 import GenericForm from "../../components/GenericForm/GenericForm";
 import { useState } from "react";
 import type { ParticipacaoTrabalhoInterface } from "../../interfaces/ParticipacaoTrabalho.interface";
-import { criarParticipacaoTrabalho } from "../../services/participacao.trabalho.service";
+import { atualizarParticipacaoTrabalho, criarParticipacaoTrabalho, obterParticipacaoPeloId } from "../../services/participacao.trabalho.service";
 import ModalBuscaGenerico from "../../components/ModalBuscaGenerico/ModalBuscaGenerico";
 import { listarTrabalhos } from "../../services/trabalho.service";
 import type { TrabalhoInterface } from "../../interfaces/TrabalhoInterface";
@@ -35,9 +35,9 @@ function ParticipacaoTrabalhoForm () {
         handleSubmit,
         navigate,
     } = useEntityForm<ParticipacaoTrabalhoInterface>({
-        getById: null,
+        getById: obterParticipacaoPeloId,
         create: criarParticipacaoTrabalho,
-        update: null,
+        update: atualizarParticipacaoTrabalho,
         redirectTo: "/participacoes-trabalho",
         getTitle: (isEdit) => (isEdit ? "Editar Participação" : "Nova Participação"),
     });
@@ -90,7 +90,7 @@ function ParticipacaoTrabalhoForm () {
                     >
                         <Space.Compact style={{ width: "100%" }}>
                             <Form.Item
-                                name="trabalho_nome"
+                                name="titulo_trabalho"
                                 noStyle
                                 rules={[
                                     { required: true, message: "Selecione um trabalho" },
@@ -123,7 +123,7 @@ function ParticipacaoTrabalhoForm () {
                     >
                         <Space.Compact style={{ width: "100%" }}>
                             <Form.Item
-                                name="pessoa_nome"
+                                name="nome_pessoa"
                                 noStyle
                                 rules={[
                                     { required: true, message: "Selecione uma pessoa" },
@@ -212,7 +212,7 @@ function ParticipacaoTrabalhoForm () {
                 onSelect={(trabalho: TrabalhoInterface) => {
                     form.setFieldsValue({
                         trabalho: trabalho.id,
-                        trabalho_nome: trabalho.titulo,
+                        titulo_trabalho: trabalho.titulo,
                     });
                     setOpenTrabalho(false);
                 }}
@@ -241,7 +241,7 @@ function ParticipacaoTrabalhoForm () {
                 onSelect={(pessoa: PessoaInterface) => {
                     form.setFieldsValue({
                         pessoa: pessoa.id,
-                        pessoa_nome: pessoa.nome,
+                        nome_pessoa: pessoa.nome,
                     });
                     setOpenPessoa(false);
                 }}

@@ -46,6 +46,7 @@ function AppRoutes(){
 
                     <Route path="/participacoes-trabalho" element={<ParticipacaoTrabalhoPage />} />
                     <Route path="/nova-participacao" element={<ParticipacaoTrabalhoForm />} />
+                    <Route path="/editar-participacao/:id" element={<ParticipacaoTrabalhoForm />} />
 
                     <Route path="/usuarios" element={<UsuarioPage />} />
                     <Route path="/novo-usuario" element={<UsuarioForm />} />
