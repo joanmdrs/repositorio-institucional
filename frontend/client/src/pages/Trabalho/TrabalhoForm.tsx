@@ -1,6 +1,6 @@
-import { Breadcrumb, Button, Form, Input, Space, Select, Upload, message } from "antd";
+import { Breadcrumb, Button, Form, Input, Space, Select, Upload, message, Collapse, Col, Table } from "antd";
 import { useEntityForm } from "../../hooks/useEntityForm";
-import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, FileTextOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, FileTextOutlined, DeleteOutlined } from "@ant-design/icons";
 import GenericForm from "../../components/GenericForm/GenericForm";
 import { useEffect, useState } from "react";
 import type { TrabalhoInterface } from "../../interfaces/TrabalhoInterface";
@@ -9,7 +9,9 @@ import { listarCursos } from "../../services/curso.service";
 import { listarPalavrasChave } from "../../services/palavra.chave.service";
 import type { SelectProps } from "antd";
 import type { DefaultOptionType } from "antd/es/select";
-
+import ModalBuscaGenerico from "../../components/ModalBuscaGenerico/ModalBuscaGenerico";
+import { listarPessoas } from "../../services/pessoa.service";
+import type { PessoaInterface } from "../../interfaces/PessoaInterface";
 
 const optionsTipo = [
     {
@@ -71,8 +73,72 @@ function TrabalhoForm () {
         }));
 
     const [optionsCurso, setOptionsCurso] = useState<SelectProps["options"]>([]);
-    const [optionsPalavraChave, setOptionsPalavraChave] = useState<SelectProps["options"]>([])
-    const existeArquivo = (isEdit && form.getFieldValue("arquivos")?.length > 0)
+    const [optionsPalavraChave, setOptionsPalavraChave] = useState<SelectProps["options"]>([]);
+    const existeArquivo = (isEdit && form.getFieldValue("arquivos")?.length > 0);
+    
+    type PessoaSelecionada = {
+        id: number;
+        nome: string;
+    };
+
+    type ColecaoPessoa = 'autor' | 'orientador' | 'coorientador';
+
+    const [openModalPessoa, setOpenModalPessoa] = useState<ColecaoPessoa | null>(null);
+
+    const autores = Form.useWatch("autores", form) || [];
+    const orientadores = Form.useWatch("orientadores", form) || [];
+    const coorientadores = Form.useWatch("coorientadores", form) || [];
+
+    const handleAddItem = (item: PessoaSelecionada, collection: ColecaoPessoa) => {
+        const fieldMap = {
+            autor: "autores",
+            orientador: "orientadores",
+            coorientador: "coorientadores",
+        } as const;
+
+        const field = fieldMap[collection];
+        const current = form.getFieldValue(field) || [];
+
+        if (!current.some((p: PessoaSelecionada) => p.id === item.id)) {
+            form.setFieldValue(field, [...current, item]);
+        }
+    };
+
+    const handleRemoveItem = (item: PessoaSelecionada, collection: ColecaoPessoa) => {
+        const fieldMap = {
+            autor: "autores",
+            orientador: "orientadores",
+            coorientador: "coorientadores",
+        } as const;
+
+        const field = fieldMap[collection];
+        const current = form.getFieldValue(field) || [];
+
+        form.setFieldValue(
+            field,
+            current.filter((p: PessoaSelecionada) => p.id !== item.id)
+        );
+    };
+
+
+    const getColumns = (collection: ColecaoPessoa) => [
+        { title: "ID", dataIndex: "id", key: "id" },
+        { title: "Nome", dataIndex: "nome", key: "nome" },
+        {
+            title: "Ações",
+            key: "acoes",
+            render: (_: any, record: PessoaSelecionada) => (
+                <Space>
+                    <Button
+                        icon={<DeleteOutlined />}
+                        type="link"
+                        danger
+                        onClick={() => handleRemoveItem(record, collection)}
+                    />
+                </Space>
+            ),
+        },
+    ];
 
 
     useEffect(() => {
@@ -85,13 +151,16 @@ function TrabalhoForm () {
                 listarPalavrasChave(),
             ]);
 
-            setOptionsCurso(mapOptions(cursosRes.data, "id", "nome"));
-            setOptionsPalavraChave(mapOptions(palavrasRes.data, "id", "termo"));
+            console.log(autores)
+
+            setOptionsCurso(mapOptions(cursosRes.data.results, "id", "nome"));
+            setOptionsPalavraChave(mapOptions(palavrasRes.data.results, "id", "termo"));
 
         };
 
         loadData();
     }, []);
+
 
 
     const handleSave = async (values: TrabalhoInterface & { arquivo: File }) => {
@@ -104,8 +173,6 @@ function TrabalhoForm () {
             "tipo",
             "idioma",
             "curso",
-            "orientador",
-            "coorientador",
         ] as const;
 
         simpleFields.forEach((field) => {
@@ -123,6 +190,19 @@ function TrabalhoForm () {
         if (values.arquivo) {
             formData.append("arquivo", values.arquivo);
         }
+
+        autores.forEach(p =>
+            formData.append('autores', String(p.id))
+        );
+
+        orientadores.forEach(p =>
+            formData.append('orientadores', String(p.id))
+        );
+
+        coorientadores.forEach(p =>
+            formData.append('coorientadores', String(p.id))
+        );
+
 
         if (isEdit) {
             await atualizarTrabalho(form.getFieldValue("id"), formData);
@@ -169,176 +249,200 @@ function TrabalhoForm () {
             />
 
             <GenericForm>
+                
                 <Form
                     form={form}
                     layout="vertical"
-                    style={{ }}
+                    style={{}}
                     onFinish={handleSave}
                 >
-                    <Form.Item
-                        label="Título"
-                        name="titulo"
-                        rules={[
-                            { required: true, message: "Informe o título" },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
+                    <Form.Item name="autores" hidden />
+                    <Form.Item name="orientadores" hidden />
+                    <Form.Item name="coorientadores" hidden />
 
-                    <Form.Item
-                        label="Resumo"
-                        name="resumo"
-                        rules={[
-                            { required: true, message: "Informe o resumo" },
-                        ]}
-                    >
-                        <Input.TextArea rows={6} />
-                    </Form.Item>
-
-                    <Form.Item 
-                        label="Palavras-chave" 
-                        name="palavras_chave" 
-                        style={{width: '50%'}}
-                        rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                        <Select
-                            mode="multiple"
-                            defaultValue="Selecione"
-                            showSearch
-                            allowClear
-                            popupMatchSelectWidth={false}
-                            options={optionsPalavraChave}
-                        />
-                    </Form.Item>
-
-                    <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+                    <Collapse style={{margin: "10px 0"}}>
+                    
+                    <Collapse.Panel header="Trabalho" key="trabalho" forceRender>
                         <Form.Item
-                            label="Data da Defesa"
-                            name="data_defesa"
-                            style={{width: 'fit-content'}}
+                            label="Título"
+                            name="titulo"
                             rules={[
-                                { required: true, message: "Informe a data da defesa " },
+                                { required: true, message: "Informe o título" },
                             ]}
                         >
-                            <Input type="date" />
+                            <Input />
+                        </Form.Item>
 
+                        <Form.Item
+                            label="Resumo"
+                            name="resumo"
+                            rules={[
+                                { required: true, message: "Informe o resumo" },
+                            ]}
+                        >
+                            <Input.TextArea rows={6} />
                         </Form.Item>
 
                         <Form.Item 
-                            label="Tipo" 
-                            name="tipo" 
-                            style={{width: '15%'}}
-                            rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                            <Select
-                                placeholder="Selecione"
-                                options={optionsTipo}
-                            />
-                        </Form.Item>
-
-                        <Form.Item 
-                            label="Idioma" 
-                            name="idioma" 
-                            style={{width: '15%'}}
-                            rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                            <Select
-                                placeholder="Selecione"
-                                options={optionsIdioma}
-                                popupMatchSelectWidth={false}
-                            />
-                        </Form.Item>
-
-                        <Form.Item 
-                            label="Curso" 
-                            name="curso" 
-                            style={{width: '15%'}}
-                            rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                            <Select
-                                placeholder="Selecione"
-                                options={optionsCurso}
-                                popupMatchSelectWidth={false}
-                            />
-                        </Form.Item>
-
-                    </div>
-
-                    <div> 
-                        {/* <Form.Item 
-                            label="Autores" 
-                            name="autores" 
-                            style={{width: '15%'}}
+                            label="Palavras-chave" 
+                            name="palavras_chave" 
+                            style={{width: '50%'}}
                             rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
                             <Select
                                 mode="multiple"
                                 placeholder="Selecione"
                                 showSearch
                                 allowClear
-                                options={optionsAutores}
                                 popupMatchSelectWidth={false}
+                                options={optionsPalavraChave}
                             />
                         </Form.Item>
 
-                        <Form.Item 
-                            label="Orientador" 
-                            name="orientador" 
-                            style={{width: '15%'}}
-                            rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
-                            <Select
-                                placeholder="Selecione"
-                                options={optionsOrientadores}
-                                popupMatchSelectWidth={false}
-                            />
-                        </Form.Item>
-
-                        <Form.Item 
-                            label="Coorientador" 
-                            name="coorientador" 
-                            style={{width: '15%'}}
-                            rules={[{ required: false, message: 'Por favor, selecione uma opção!' }]}>
-                            <Select
-                                placeholder="Selecione"
-                                options={optionsCoorientadores}
-                                popupMatchSelectWidth={false}
-                            />
-                        </Form.Item> */}
-                    </div>
-
-                    {isEdit && form.getFieldValue("arquivos")?.length > 0 && (
-                        <Form.Item label="Arquivo atual">
-                            <a
-                                href={`http://localhost:8000/${form.getFieldValue("arquivos")[0].arquivo}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                        <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+                            <Form.Item
+                                label="Data da Defesa"
+                                name="data_defesa"
+                                style={{width: 'fit-content'}}
+                                rules={[
+                                    { required: true, message: "Informe a data da defesa " },
+                                ]}
                             >
-                                Visualizar arquivo atual
-                            </a>
-                        </Form.Item>
-                    )}
+                                <Input type="date" />
+
+                            </Form.Item>
+
+                            <Form.Item 
+                                label="Tipo" 
+                                name="tipo" 
+                                style={{width: '15%'}}
+                                rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
+                                <Select
+                                    placeholder="Selecione"
+                                    options={optionsTipo}
+                                />
+                            </Form.Item>
+
+                            <Form.Item 
+                                label="Idioma" 
+                                name="idioma" 
+                                style={{width: '15%'}}
+                                rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
+                                <Select
+                                    placeholder="Selecione"
+                                    options={optionsIdioma}
+                                    popupMatchSelectWidth={false}
+                                />
+                            </Form.Item>
+
+                            <Form.Item 
+                                label="Curso" 
+                                name="curso" 
+                                style={{width: '15%'}}
+                                rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
+                                <Select
+                                    placeholder="Selecione"
+                                    options={optionsCurso}
+                                    popupMatchSelectWidth={false}
+                                />
+                            </Form.Item>
+
+                        </div>
+
+                        
+
+                        {isEdit && form.getFieldValue("arquivos")?.length > 0 && (
+                            <Form.Item label="Arquivo atual">
+                                <a
+                                    href={`${form.getFieldValue("arquivos")[0].arquivo}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Visualizar arquivo atual
+                                </a>
+                            </Form.Item>
+                        )}
 
 
-                    <Form.Item
-                        label={existeArquivo ? "Novo Arquivo (opcional)" : "Arquivo"}
-                        name="arquivo"
-                        valuePropName="file"
-                        getValueFromEvent={(e) => e?.file}
-                        rules={[
-                            { required: !existeArquivo, message: "Selecione um arquivo" }
-                        ]}
-                    >
-                        <Upload
-                            beforeUpload={() => false}
-                            maxCount={1}
-                            accept=".pdf,.doc,.docx"
+                        <Form.Item
+                            label={existeArquivo ? "Novo Arquivo (opcional)" : "Arquivo"}
+                            name="arquivo"
+                            valuePropName="file"
+                            getValueFromEvent={(e) => e?.file}
+                            rules={[
+                                { required: !existeArquivo, message: "Selecione um arquivo" }
+                            ]}
                         >
-                            <Button icon={<FileTextOutlined />}>
-                                Selecionar arquivo
+                            <Upload
+                                beforeUpload={() => false}
+                                maxCount={1}
+                                accept=".pdf,.doc,.docx"
+                            >
+                                <Button icon={<FileTextOutlined />}>
+                                    Selecionar arquivo
+                                </Button>
+                            </Upload>
+                        </Form.Item>
+                    </Collapse.Panel>
+                    
+
+                        <Collapse.Panel header="Autores" key="autores" forceRender>
+                            <Button
+                                icon={<PlusOutlined />}
+                                type="primary"
+                                onClick={() => setOpenModalPessoa('autor')}
+                            >
+                                Adicionar Autor
                             </Button>
-                        </Upload>
-                    </Form.Item>
 
+                            {autores.length > 0 && (
+                                <Table
+                                    bordered
+                                    dataSource={autores}
+                                    columns={getColumns('autor')}
+                                    rowKey="id"
+                                />
+                            )}
+                        </Collapse.Panel>
 
+                        <Collapse.Panel header="Orientador" key="orientador" forceRender>
+                            <Button
+                                icon={<PlusOutlined />}
+                                type="primary"
+                                onClick={() => setOpenModalPessoa('orientador')}
+                            >
+                                Adicionar Orientador
+                            </Button>
 
-                    
+                            {orientadores.length > 0 && (
+                                <Table
+                                    bordered
+                                    dataSource={orientadores}
+                                    columns={getColumns('orientador')}
+                                    rowKey="id"
+                                />
+                            )}
+                        </Collapse.Panel>
 
-                    
+                        <Collapse.Panel header="Coorientadores" key="coorientadores" forceRender>
+                            <Button
+                                icon={<PlusOutlined />}
+                                type="primary"
+                                onClick={() => setOpenModalPessoa('coorientador')}
+                            >
+                                Adicionar Coorientador
+                            </Button>
+
+                            {coorientadores.length > 0 && (
+                                <Table
+                                    bordered
+                                    dataSource={coorientadores}
+                                    columns={getColumns('coorientador')}
+                                    rowKey="id"
+                                />
+                            )}
+                        </Collapse.Panel>
+
+                    </Collapse>
 
                     {/* Ações */}
                     <Space>
@@ -360,6 +464,35 @@ function TrabalhoForm () {
                     </Space>
                 </Form>
             </GenericForm>
+
+            <ModalBuscaGenerico
+                open={!!openModalPessoa}
+                title="Buscar Pessoa"
+                rowKey="id"
+                columns={[
+                    { title: "Nome", dataIndex: "nome" },
+                    { title: "Cpf", dataIndex: "cpf" },
+                ]}
+                fetchData={async ({ search, page }) => {
+                    const res = await listarPessoas({ search, page });
+                    return {
+                        results: res.data.results,
+                        count: res.data.count,
+                    };
+                }}
+                selectionMode="single"
+                onSelect={(pessoa: PessoaInterface) => {
+                    if (openModalPessoa) {
+                        handleAddItem(
+                            { id: pessoa.id, nome: pessoa.nome },
+                            openModalPessoa
+                        );
+                    }
+                    setOpenModalPessoa(null);
+                }}
+                onCancel={() => setOpenModalPessoa(null)}
+            />
+
             
         </div>
     );

@@ -13,9 +13,11 @@ interface ModalBuscaProps<T> {
         results: T[];
         count: number;
     }>;
-    onSelect: (record: T) => void;
+    onSelect?: (record: T) => void;
+    onSelectMany?: (records: T[]) => void;
     onCancel: () => void;
     rowKey: keyof T;
+    selectionMode?: "single" | "multiple";
 }
 
 function ModalBuscaGenerico<T extends object>({
@@ -24,14 +26,18 @@ function ModalBuscaGenerico<T extends object>({
     columns,
     fetchData,
     onSelect,
+    onSelectMany,
     onCancel,
     rowKey,
+    selectionMode = "single",
 }: ModalBuscaProps<T>) {
     const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [selectedRows, setSelectedRows] = useState<T[]>([]);
 
     const loadData = async () => {
         setLoading(true);
@@ -46,43 +52,81 @@ function ModalBuscaGenerico<T extends object>({
 
     useEffect(() => {
         if (open) loadData();
-    }, [open, search, page]);
+    }, [search, page]);
 
     return (
         <Modal
-        open={open}
-        title={title}
-        onCancel={onCancel}
-        footer={null}
-        width={800}
-        destroyOnHidden
+            open={open}
+            title={title}
+            onCancel={onCancel}
+            width={800}
+            destroyOnHidden
+            footer={
+                selectionMode === "multiple"
+                    ? [
+                          <button
+                              key="cancel"
+                              onClick={onCancel}
+                              className="ant-btn"
+                          >
+                              Cancelar
+                          </button>,
+                          <button
+                              key="ok"
+                              className="ant-btn ant-btn-primary"
+                              disabled={!selectedRows.length}
+                              onClick={() => onSelectMany?.(selectedRows)}
+                          >
+                              Selecionar ({selectedRows.length})
+                          </button>,
+                      ]
+                    : null
+            }
         >
-        <Input.Search
-            placeholder="Buscar..."
-            allowClear
-            onSearch={(value) => {
-            setSearch(value);
-            setPage(1);
-            }}
-            style={{ marginBottom: 16 }}
-        />
+            <Input.Search
+                placeholder="Buscar..."
+                allowClear
+                onSearch={(value) => {
+                    setSearch(value);
+                    setPage(1);
+                }}
+                onChange={(value) => {
+                    
+                }}
+                style={{ marginBottom: 16 }}
+            />
 
-        <Table
-            rowKey={(record) => String(record[rowKey])}
-            columns={columns}
-            dataSource={data}
-            loading={loading}
-            pagination={{
-                current: page,
-                total,
-                onChange: (p) => setPage(p),
-            }}
-            onRow={(record) => ({
-                onClick: () => onSelect(record),
-            })}
-        />
+            <Table
+                rowKey={(record) => String(record[rowKey])}
+                columns={columns}
+                dataSource={data}
+                loading={loading}
+                pagination={{
+                    current: page,
+                    total,
+                    onChange: (p) => setPage(p),
+                }}
+                rowSelection={
+                    selectionMode === "multiple"
+                        ? {
+                              selectedRowKeys,
+                              onChange: (keys, rows) => {
+                                  setSelectedRowKeys(keys);
+                                  setSelectedRows(rows);
+                              },
+                          }
+                        : undefined
+                }
+                onRow={
+                    selectionMode === "single"
+                        ? (record) => ({
+                              onClick: () => onSelect?.(record),
+                          })
+                        : undefined
+                }
+            />
         </Modal>
     );
 }
 
-export default ModalBuscaGenerico;
+export default ModalBuscaGenerico

@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Form, Space, Input, Select } from "antd";
 import { useEntityForm } from "../../hooks/useEntityForm";
-import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined, ZhihuCircleFilled } from "@ant-design/icons";
+import { ArrowLeftOutlined, DeleteOutlined, HomeOutlined, PlusOutlined, SaveOutlined, TeamOutlined, ZhihuCircleFilled } from "@ant-design/icons";
 import GenericForm from "../../components/GenericForm/GenericForm";
 import { useState } from "react";
 import type { ParticipacaoTrabalhoInterface } from "../../interfaces/ParticipacaoTrabalho.interface";
@@ -44,10 +44,7 @@ function ParticipacaoTrabalhoForm () {
 
     const [openTrabalho, setOpenTrabalho] = useState(false);
     const [openPessoa, setOpenPessoa] = useState(false);
-
     
-    
-
 
     return (
         <div>
@@ -211,10 +208,11 @@ function ParticipacaoTrabalhoForm () {
                         count: res.data.count,
                     };
                 }}
+                selectionMode="single"
                 onSelect={(trabalho: TrabalhoInterface) => {
                     form.setFieldsValue({
-                    trabalho: trabalho.id,
-                    trabalho_nome: trabalho.titulo,
+                        trabalho: trabalho.id,
+                        trabalho_nome: trabalho.titulo,
                     });
                     setOpenTrabalho(false);
                 }}
@@ -239,6 +237,7 @@ function ParticipacaoTrabalhoForm () {
                         count: res.data.count,
                     };
                 }}
+                selectionMode="single"
                 onSelect={(pessoa: PessoaInterface) => {
                     form.setFieldsValue({
                         pessoa: pessoa.id,

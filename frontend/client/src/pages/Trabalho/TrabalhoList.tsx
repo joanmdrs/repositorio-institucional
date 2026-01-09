@@ -15,6 +15,7 @@ function TrabalhoList() {
     });
 
     const colunasTrabalho = [
+        { title: "ID", dataIndex: "id", key: "id"},
         { title: "Título", dataIndex: "titulo", key: "titulo" },
         {
             title: "Ações",
