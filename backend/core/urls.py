@@ -22,13 +22,15 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("repo/admin/", admin.site.urls),
-    path("repo/autor/", include("apps.autor.urls", namespace="autor")),
-    path("repo/orientador/", include("apps.orientador.urls", namespace="orientador")),
+    path("repo/usuario/", include("apps.usuario.urls", namespace="usuario")),
+    path("repo/groups/", include("apps.usuario.urls_groups", namespace="groups")),
+    path("repo/pessoa/", include("apps.pessoa.urls", namespace="pessoa")),
     path("repo/departamento/", include("apps.departamento.urls", namespace="departamento")),
     path("repo/curso/", include("apps.curso.urls", namespace="curso")),
     path("repo/palavra_chave/", include("apps.palavra_chave.urls", namespace="palavra_chave")),
     path("repo/trabalho/", include("apps.trabalho.urls", namespace="trabalho")),
     path("repo/arquivo/", include("apps.arquivo.urls", namespace="arquivo")),
+    path("repo/participacao_trabalho/", include("apps.participacao_trabalho.urls", namespace="participacao_trabalho"))
 ]
 
 if settings.DEBUG:

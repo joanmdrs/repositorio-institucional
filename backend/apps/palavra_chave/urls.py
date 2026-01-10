@@ -1,13 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PalavraChaveViewSet
 
-from .views import CriarPalavraChaveView, ListarPalavrasChaveView, AtualizarPalavraChaveView, BuscarPalavraChavePeloTermoView, ExcluirPalavraChaveView
+router = DefaultRouter()
+router.register(r'', PalavraChaveViewSet, basename='palavra_chave')
 
-app_name = "palavra_chave"
+app_name = 'palavra_chave'
 
 urlpatterns = [
-    path("criar/", CriarPalavraChaveView.as_view(), name="criar_palavra_chave"),
-    path("listar/", ListarPalavrasChaveView.as_view(), name="listar_palavras_chave"),
-    path("atualizar/<int:palavra_chave_id>/", AtualizarPalavraChaveView.as_view(), name="atualizar_palavra_chave"),
-    path("excluir/<int:palavra_chave_id>/", ExcluirPalavraChaveView.as_view(), name="excluir_palavra_chave"),
-    path("buscar-pelo-termo/", BuscarPalavraChavePeloTermoView.as_view(), name="buscar_palavra_chave_termo"), 
+    path('', include(router.urls)),
 ]
