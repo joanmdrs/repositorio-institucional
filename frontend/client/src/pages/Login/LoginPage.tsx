@@ -4,6 +4,15 @@ import { useAuth } from "../../auth/auth.hook";
 import { Button, Form, Input, message } from "antd";
 import type { LoginRequest } from "../../auth/auth.types";
 
+
+const styleLogin: React.CSSProperties = {
+    display: "flex",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center"
+}
+
+
 export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -15,24 +24,25 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            await login(values['username'], values['password']);
+            //await login(values['username'], values['password']);
 
         // depois você pode trocar isso por:
         // - /select-group
         // - /dashboard
         message.success('Login realizado com sucesso!')
-        navigate("/");
+        console.log(values)
+        // navigate("/");
 
         } catch (err: any) {
             console.log("Erro ao tentar realizar login", err)
-            message.success('Falha no login, tente novamente!')
+            message.error('Falha no login, tente novamente!')
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <div>
+        <div style={styleLogin}>
             <Form
                 name="basic"
                 labelCol={{ span: 8 }}

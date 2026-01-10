@@ -3,6 +3,8 @@ import { Layout } from 'antd';
 import MenuAdmin from '../MenuAdmin/MenuAdmin';
 import ComponentHeader from '../Header/Header';
 import { Outlet } from 'react-router-dom';
+import { useAuth } from '../../auth/auth.hook';
+import { UserGroup } from '../../auth/groups';
 
 const { Sider, Content } = Layout;
 
@@ -33,7 +35,7 @@ const siderStyle: React.CSSProperties = {
     color: '#fff',
 };
 
-const layoutStyle = {
+const layoutStyle: React.CSSProperties =  {
     overflow: 'hidden',
     minHeight: '100vh'
     // width: 'calc(50% - 8px)',
@@ -42,6 +44,17 @@ const layoutStyle = {
 
 function MainLayout () {
     const [collapsed, setCollapsed] = useState(false);
+    const { user } = useAuth();
+
+
+    function renderMenu() {
+        if (!user) return null;
+
+        if (user.groups.includes(UserGroup.ADMINISTRADOR)) {
+            return <MenuAdmin />;
+        }
+        return null;
+    }
 
     return (
         <Layout style={layoutStyle}>
@@ -52,7 +65,7 @@ function MainLayout () {
                 onCollapse={(value) => setCollapsed(value)}
             >
                 <div style={logoStyle}></div>
-                <MenuAdmin />
+                {renderMenu()}
             </Sider>
             <Layout>
                 <ComponentHeader />
