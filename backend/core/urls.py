@@ -30,7 +30,8 @@ urlpatterns = [
     path("repo/palavra_chave/", include("apps.palavra_chave.urls", namespace="palavra_chave")),
     path("repo/trabalho/", include("apps.trabalho.urls", namespace="trabalho")),
     path("repo/arquivo/", include("apps.arquivo.urls", namespace="arquivo")),
-    path("repo/participacao_trabalho/", include("apps.participacao_trabalho.urls", namespace="participacao_trabalho"))
+    path("repo/participacao_trabalho/", include("apps.participacao_trabalho.urls", namespace="participacao_trabalho")),
+    path("repo/auth/", include("apps.authentication.urls", namespace='auth')),
 ]
 
 if settings.DEBUG:

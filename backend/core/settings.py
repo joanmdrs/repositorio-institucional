@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     "apps.trabalho",   
     "apps.palavra_chave",
     "apps.arquivo",
-    "apps.participacao_trabalho"
+    "apps.participacao_trabalho",
+    "apps.authentication"
     
 ]
 
