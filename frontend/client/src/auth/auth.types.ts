@@ -6,6 +6,6 @@ export interface LoginRequest {
 export interface LoginResponse {
   access: string;
   refresh: string;
-  groups: number[];
+  groups: string[];
   active_group: number | null;
 }
