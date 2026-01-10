@@ -8,7 +8,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
 
         # Pega os grupos do usuário
-        groups = list(self.user.groups.values_list("id", flat=True))
+        groups = list(self.user.groups.values_list("name", flat=True))
         data["groups"] = groups
 
         # Ainda não tem active_group definido
