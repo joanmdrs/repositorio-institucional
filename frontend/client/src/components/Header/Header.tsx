@@ -2,6 +2,7 @@ import { Layout, Dropdown, Avatar, Space } from "antd";
 import type { MenuProps } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import logoFCST from "../../assets/fcst.png";
+import { useAuth } from "../../auth/auth.hook";
 const { Header } = Layout;
 
 const headerStyle: React.CSSProperties = {
@@ -15,10 +16,11 @@ const headerStyle: React.CSSProperties = {
 
 const logoStyle: React.CSSProperties = { 
     width: 100,
-
 }
 
 function ComponentHeader() {
+
+    const { logout } = useAuth()
 
 
     const items: MenuProps["items"] = [
@@ -29,10 +31,8 @@ function ComponentHeader() {
         {
             key: "logout",
             label: (
-            <div onClick={() => { 
-                }}
-            >
-            Logout
+            <div onClick={() => logout()}>
+                Logout
             </div>
         ),
         },
