@@ -1,7 +1,6 @@
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
-    HomeOutlined,
     UserOutlined,
     ApartmentOutlined,
     BookOutlined,
@@ -9,7 +8,8 @@ import {
     FileTextOutlined,
     SettingOutlined,
     FolderOpenOutlined,
-    TeamOutlined
+    TeamOutlined,
+    LayoutOutlined
 } from "@ant-design/icons";
 
 function MenuAdmin() {
@@ -21,8 +21,8 @@ function MenuAdmin() {
             theme="dark"
             onClick={({ key }) => navigate(key)}
         >
-            <Menu.Item key="/" icon={<HomeOutlined />}>
-                Home
+            <Menu.Item key="/" icon={<LayoutOutlined />}>
+                Dashboard
             </Menu.Item>
 
             <Menu.Item key="/pessoas" icon={<UserOutlined />}>

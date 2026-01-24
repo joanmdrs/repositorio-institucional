@@ -1,9 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout/MainLayout";
-
 import { UserGroup } from "./auth/groups";
-
-
 import DepartamentoPage from "./pages/Departamento/DepartamentoPage";
 import DepartamentoForm from "./pages/Departamento/DepartamentoForm";
 import CursoPage from "./pages/Curso/CursoPage";
@@ -25,6 +22,7 @@ import Forbidden from "./pages/Login/Forbidden";
 import ProtectedRoute from "./auth/ProtectedRoutes";
 import Home from "./pages/Home/Home";
 import RenderSearchPage from "./pages/Search/Search";
+import DashboardPage from "./pages/Dashboard/DashboardPage";
 
 function AppRoutes() {
   return (
@@ -50,7 +48,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         >
-          <Route path="/" element={<div>Home</div>} />
+          <Route path="/" element={<DashboardPage />} />
           
 
           <Route path="/pessoas" element={<PessoaPage />} />
