@@ -7,6 +7,7 @@ function App() {
       theme={{
         token: {
           fontFamily: 'Lexend, sans-serif',
+          colorPrimary: "#2dca5c",
         },
       }}
     >

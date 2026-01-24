@@ -4,7 +4,7 @@ import { useAuth } from "../../auth/auth.hook";
 import { Button, Form, Input, message } from "antd";
 import type { LoginRequest } from "../../auth/auth.types";
 import HeaderLogin from "./HeaderLogin";
-import LoginFooter from "./LoginFooter";
+import CustomFooter from "../../components/Footer/Footer";
 
 const loginPageStyle: React.CSSProperties = {
     minHeight: "100vh",
@@ -84,7 +84,7 @@ export default function LoginPage() {
                     </Form.Item>
                 </Form>
             </div>
-            <LoginFooter />
+            <CustomFooter />
             
         </div>
   );

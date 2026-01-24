@@ -23,6 +23,8 @@ import UsuarioForm from "./pages/Usuario/UsuarioForm";
 import LoginPage from "./pages/Login/LoginPage";
 import Forbidden from "./pages/Login/Forbidden";
 import ProtectedRoute from "./auth/ProtectedRoutes";
+import Home from "./pages/Home/Home";
+import RenderSearchPage from "./pages/Search/Search";
 
 function AppRoutes() {
   return (
@@ -30,8 +32,10 @@ function AppRoutes() {
       <Routes>
 
         {/* públicas */}
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/403" element={<Forbidden />} />
+        <Route path="/search/:search" element={<RenderSearchPage />} />
 
         {/* protegidas */}
         <Route
@@ -47,6 +51,7 @@ function AppRoutes() {
           }
         >
           <Route path="/" element={<div>Home</div>} />
+          
 
           <Route path="/pessoas" element={<PessoaPage />} />
           <Route path="/nova-pessoa" element={<PessoaForm />} />

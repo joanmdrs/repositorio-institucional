@@ -5,7 +5,9 @@ import ComponentHeader from '../Header/Header';
 import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../auth/auth.hook';
 import { UserGroup } from '../../auth/groups';
-
+import logoImage from '../../assets/logo.png';
+import pastasImage from '../../assets/pastas.png';
+import { BarsOutlined } from '@ant-design/icons';
 const { Sider, Content } = Layout;
 
 // const headerStyle: React.CSSProperties = {
@@ -24,10 +26,12 @@ const contentStyle: React.CSSProperties = {
 };
 
 const logoStyle: React.CSSProperties = {
-    height: 32,
-    margin: 16,
-    borderRadius: 6,
-    background: 'rgba(255, 255, 255, 0.3)',
+    height: 64,
+    justifyContent: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 16px',
+    fontFamily: "'Oleo Script', cursive",
 };
 
 const siderStyle: React.CSSProperties = {
@@ -64,7 +68,13 @@ function MainLayout () {
                 collapsed={collapsed} 
                 onCollapse={(value) => setCollapsed(value)}
             >
-                <div style={logoStyle}></div>
+                <div style={logoStyle}>
+                    
+                    { !collapsed ? 
+                        <img src={logoImage} alt="Logo" style={{width: `80%`, height: "auto", margin: '0'}} />
+                        : <BarsOutlined />
+                    }
+                </div>
                 {renderMenu()}
             </Sider>
             <Layout>

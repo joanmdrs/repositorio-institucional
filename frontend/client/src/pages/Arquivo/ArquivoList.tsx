@@ -14,10 +14,10 @@ function ArquivoList() {
         requestDelete,
         confirmDelete,
         cancelDelete } =
-        useEntityList<ArquivoDetail>({
-        fetchAll: listarArquivos,
-        deleteById: excluirArquivo,
-    });
+            useEntityList<ArquivoDetail>({
+            fetchAll: listarArquivos,
+            deleteById: excluirArquivo,
+        });
 
     const colunasArquivo = [
         { title: "Nome", dataIndex: "nome", key: "nome" },
@@ -34,7 +34,7 @@ function ArquivoList() {
                 <Space>
                     <Button
                         type="link"
-                        onClick={() => window.open(`http://localhost:8000/${record.arquivo}`, "_blank")}
+                        onClick={() => window.open(`${record.arquivo}`, "_blank")}
                     >
                         Visualizar
                     </Button>
