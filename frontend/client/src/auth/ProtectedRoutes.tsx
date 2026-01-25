@@ -20,6 +20,7 @@ export default function ProtectedRoute({
     }
 
     // sem grupo permitido
+
     const hasPermission = user.groups.some((groupName) =>
         allowedGroups.includes(groupName as UserGroup)
     );

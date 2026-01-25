@@ -23,6 +23,7 @@ import ProtectedRoute from "./auth/ProtectedRoutes";
 import Home from "./pages/Home/Home";
 import RenderSearchPage from "./pages/Search/Search";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 function AppRoutes() {
   return (
@@ -49,6 +50,7 @@ function AppRoutes() {
           }
         >
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
           
 
           <Route path="/pessoas" element={<PessoaPage />} />

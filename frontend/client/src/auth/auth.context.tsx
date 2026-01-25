@@ -1,8 +1,9 @@
 import { createContext } from "react";
-import type { LoginResponse } from "./auth.types";
+import type { LoginUser } from "./auth.types";
 
 export interface AuthContextData {
-    user: LoginResponse | null;
+    user: LoginUser | null;
+    accessToken: string | null;
     login: (username: string, password: string) => Promise<void>;
     logout: () => void;
 }

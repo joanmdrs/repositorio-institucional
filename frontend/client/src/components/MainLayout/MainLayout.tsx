@@ -6,7 +6,6 @@ import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../auth/auth.hook';
 import { UserGroup } from '../../auth/groups';
 import logoImage from '../../assets/logo.png';
-import pastasImage from '../../assets/pastas.png';
 import { BarsOutlined } from '@ant-design/icons';
 const { Sider, Content } = Layout;
 
