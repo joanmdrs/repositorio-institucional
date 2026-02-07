@@ -154,7 +154,6 @@ function ParticipacaoTrabalhoForm () {
                         name="papel" 
                         label="Papel" 
                         rules={[{required: true, message: "Selecione um papel"}]}
-
                     >
                         <Select showSearch options={optionsPapeis} placeholder="Selecione" />
                     </Form.Item>

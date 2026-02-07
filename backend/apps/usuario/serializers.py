@@ -8,9 +8,15 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
         
 class UsuarioReadSerializer(serializers.ModelSerializer):
+    groups_detail = GroupSerializer(
+        source="groups",
+        many=True,
+        read_only=True
+    )
+    
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'is_staff', 'is_superuser', 'groups']
+        fields = ['id', 'username', 'email', 'is_staff', 'is_superuser', 'groups', 'groups_detail']
         read_only_fields = ['id', 'is_staff', 'is_superuser']
 
 class UsuarioWriteSerializer(serializers.ModelSerializer):

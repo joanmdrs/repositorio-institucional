@@ -21,6 +21,7 @@ function ParticipacaoTrabalhoList() {
     });
 
     const colunasParticipacao = [
+        { title: "ID", dataIndex: "id", key: "id" },
         { title: "Nome", dataIndex: "nome_pessoa", key: "nome_pessoa" },
         { title: "Trabalho", dataIndex: "titulo_trabalho", key: "titulo_trabalho" },
         { title: "Papel", dataIndex: "nome_papel", key: "nome_papel" },

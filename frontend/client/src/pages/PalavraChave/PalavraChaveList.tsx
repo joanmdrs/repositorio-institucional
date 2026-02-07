@@ -22,6 +22,7 @@ function PalavraChaveList() {
     });
 
     const colunasPalavrasChave = [
+        { title: "ID", dataIndex: "id", key: "id" },
         { title: "Termo", dataIndex: "termo", key: "termo" },
         {
             title: "Ações",
