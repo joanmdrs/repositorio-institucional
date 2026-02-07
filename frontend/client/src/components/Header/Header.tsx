@@ -20,7 +20,7 @@ const logoStyle: React.CSSProperties = {
 
 function ComponentHeader() {
 
-    const { logout } = useAuth()
+    const { logout, user } = useAuth()
 
 
     const items: MenuProps["items"] = [
@@ -42,8 +42,8 @@ function ComponentHeader() {
         <Header style={headerStyle}>
             <img src={logoFCST} style={logoStyle} />
             <Dropdown menu={{ items }} placement="bottomRight">
-                <Space style={{ cursor: "pointer", color: "#fff" }}>
-                    <Avatar icon={<UserOutlined />} />
+                <Space style={{ cursor: "pointer", color: "#fff"}}>
+                    <Avatar  style={{backgroundColor: "#42ACD8"}} icon={<span> {user?.nome?.substring(0, 1).toUpperCase() || "U"} </span>} />
                 </Space>
             </Dropdown>
         </Header>
