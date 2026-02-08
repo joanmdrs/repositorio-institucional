@@ -4,6 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.http import FileResponse
+from core.pagination import DefaultPagination
 import hashlib
 
 from .models import Arquivo
@@ -14,6 +15,7 @@ class ArquivoViewSet(ModelViewSet):
     queryset = Arquivo.objects.all().order_by("-criado_em")
     serializer_class = ArquivoSerializer
     permission_classes = [AllowAny]
+    pagination_class = DefaultPagination
     parser_classes = [MultiPartParser, FormParser]
 
     def perform_create(self, serializer):

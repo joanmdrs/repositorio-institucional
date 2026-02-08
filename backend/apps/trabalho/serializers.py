@@ -5,13 +5,36 @@ from apps.palavra_chave.models import PalavraChave
 from apps.arquivo.serializers import ArquivoSerializer
 from apps.participacao_trabalho.models import ParticipacaoTrabalho
 import hashlib
+import json
+
+class PalavraChaveListField(serializers.Field):
+    def to_internal_value(self, data):
+        if isinstance(data, str):
+            try:
+                data = json.loads(data)
+            except json.JSONDecodeError:
+                raise serializers.ValidationError("Formato inválido")
+
+        if not isinstance(data, list):
+            raise serializers.ValidationError("Esperado uma lista")
+
+        palavras = []
+        for termo in data:
+            termo_normalizado = termo.strip().lower()
+            palavra, _ = PalavraChave.objects.get_or_create(
+                termo=termo_normalizado
+            )
+            palavras.append(palavra)
+
+        return palavras
+
+    def to_representation(self, value):
+        return [p.termo for p in value.all()]
+
+
 
 class TrabalhoBaseSerializer(serializers.ModelSerializer):
-    palavras_chave = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=PalavraChave.objects.all(),
-        required=False
-    )
+    palavras_chave = PalavraChaveListField(required=False)
 
     ano_defesa = serializers.IntegerField(read_only=True)
 

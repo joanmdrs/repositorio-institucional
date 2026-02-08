@@ -33,6 +33,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Application definition
 
@@ -54,7 +55,8 @@ INSTALLED_APPS = [
     "apps.trabalho",   
     "apps.palavra_chave",
     "apps.arquivo",
-    "apps.participacao_trabalho"
+    "apps.participacao_trabalho",
+    "apps.authentication"
     
 ]
 

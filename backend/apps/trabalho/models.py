@@ -18,6 +18,7 @@ class Trabalho(models.Model):
 
     tipo = models.CharField(max_length=3, choices=TIPO_CHOICES)
     idioma = models.CharField(max_length=50)
+    disponivel_consulta = models.BooleanField(default=True)
 
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     editor = models.CharField(max_length=255, blank=True, null=True)

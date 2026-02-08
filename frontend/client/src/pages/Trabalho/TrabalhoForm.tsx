@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Form, Input, Space, Select, Upload, message, Collapse, Col, Table } from "antd";
+import { Breadcrumb, Button, Form, Input, Space, Select, Upload, message, Collapse, Col, Table, Checkbox, Radio } from "antd";
 import { useEntityForm } from "../../hooks/useEntityForm";
 import { ArrowLeftOutlined, HomeOutlined, PlusOutlined, SaveOutlined, FileTextOutlined, DeleteOutlined } from "@ant-design/icons";
 import GenericForm from "../../components/GenericForm/GenericForm";
@@ -183,9 +183,12 @@ function TrabalhoForm () {
 
        
 
-        values.palavras_chave?.forEach((id) =>
-            formData.append("palavras_chave", String(id))
-        );
+        if (values.palavras_chave) {
+            formData.append(
+                "palavras_chave",
+                JSON.stringify(values.palavras_chave)
+            );
+        }
 
         if (values.arquivo) {
             formData.append("arquivo", values.arquivo);
@@ -283,20 +286,40 @@ function TrabalhoForm () {
                             <Input.TextArea rows={6} />
                         </Form.Item>
 
-                        <Form.Item 
-                            label="Palavras-chave" 
-                            name="palavras_chave" 
-                            style={{width: '50%'}}
-                            rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
+                        <Form.Item
+                            label="Palavras-chave"
+                            name="palavras_chave"
+                            rules={[
+                                { required: true, message: "Informe ao menos uma palavra-chave" },
+                                {
+                                    validator: (_, value) =>
+                                        value && value.length > 5
+                                        ? Promise.reject("Máximo de 5 palavras-chave")
+                                        : Promise.resolve(),
+                                    },
+                            ]}
+                            extra="Digite e pressione Enter para adicionar (máx. 5)"
+                        >
                             <Select
-                                mode="multiple"
-                                placeholder="Selecione"
+                                mode="tags"
+                                placeholder="Ex: Engenharia de Software, IA, DevOps"
+                                tokenSeparators={[","]}
                                 showSearch
-                                allowClear
-                                popupMatchSelectWidth={false}
-                                options={optionsPalavraChave}
+                                maxTagCount={5}
+                                onChange={(values) => {
+                                    const normalizadas = Array.from(
+                                        new Map(
+                                        values.map((v) => [v.toLowerCase(), v.trim()])
+                                        ).values()
+                                    );
+
+                                    // garante que o form fique sincronizado
+                                    form.setFieldValue("palavras_chave", normalizadas);
+                                }}
                             />
                         </Form.Item>
+
+
 
                         <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
                             <Form.Item
@@ -304,7 +327,7 @@ function TrabalhoForm () {
                                 name="data_defesa"
                                 style={{width: 'fit-content'}}
                                 rules={[
-                                    { required: true, message: "Informe a data da defesa " },
+                                    { required: false, message: "Informe a data da defesa " },
                                 ]}
                             >
                                 <Input type="date" />
@@ -326,7 +349,7 @@ function TrabalhoForm () {
                                 label="Idioma" 
                                 name="idioma" 
                                 style={{width: '15%'}}
-                                rules={[{ required: true, message: 'Por favor, selecione uma opção!' }]}>
+                                rules={[{ required: false, message: 'Por favor, selecione uma opção!' }]}>
                                 <Select
                                     placeholder="Selecione"
                                     options={optionsIdioma}
@@ -346,7 +369,24 @@ function TrabalhoForm () {
                                 />
                             </Form.Item>
 
+                            
+
+
+
                         </div>
+
+                        <Form.Item
+                            label="Disponível para consulta ?"
+                            name="disponivel_consulta"
+                            rules={[{ required: true, message: 'Por favor, marque a opção!' }]}
+                        >
+                            <Radio.Group
+                                options={[
+                                    { value: true, label: 'Sim' },
+                                    { value: false, label: 'Não' },
+                                ]}
+                            />
+                        </Form.Item>
 
                         
 
